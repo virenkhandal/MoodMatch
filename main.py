@@ -23,7 +23,6 @@ def writeLyrics(csvFiletoRead, csvFiletoWrite):
     openCSVtoWrite.close()
     openCSVtoRead.close()
 
-
 if __name__ == "__main__":
     writeLyrics("SongRecommender/Spotify/spotify.csv", "SongRecommender/Spotify/updatedspotify.csv")
     writeLyrics("SongRecommender/Billboard/billboard.csv", "SongRecommender/Billboard/updatedbillboard.csv")
