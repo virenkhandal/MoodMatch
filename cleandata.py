@@ -35,9 +35,10 @@ def merger(fileOne, fileTwo, fileThree, fileFour, toFile):
     result.to_csv(toFile, index=False)
 
 
-clean(spotify, spotifyClean)
-clean(genius, geniusClean)
-clean(popvortex, popvortexClean)
-clean(billboard, billboardClean)
-merger(spotifyClean, geniusClean, popvortexClean, billboardClean, merge)
-clean(merge, final)
+def run():
+    clean(spotify, spotifyClean)
+    clean(genius, geniusClean)
+    clean(popvortex, popvortexClean)
+    clean(billboard, billboardClean)
+    merger(spotifyClean, geniusClean, popvortexClean, billboardClean, merge)
+    clean(merge, final)

@@ -1,5 +1,6 @@
 import csv
 import lyricsgenius
+from cleandata import run
 
 genius = lyricsgenius.Genius("m17kwEB8esoXIGoiSWAxM-HxuVSPTnZ9YAXct_HBNh_O4y6BoNRQa5TrIkMH_l6C")
 
@@ -23,8 +24,10 @@ def writeLyrics(csvFiletoRead, csvFiletoWrite):
     openCSVtoWrite.close()
     openCSVtoRead.close()
 
+
 if __name__ == "__main__":
     writeLyrics("SongRecommender/Spotify/spotify.csv", "SongRecommender/Spotify/updatedspotify.csv")
     writeLyrics("SongRecommender/Billboard/billboard.csv", "SongRecommender/Billboard/updatedbillboard.csv")
     writeLyrics("SongRecommender/PopVortex/popvortex.csv", "SongRecommender/PopVortex/updatedpopvortex.csv")
     writeLyrics("SongRecommender/Genius/genius.csv", "SongRecommender/Genius/updatedgenius.csv")
+    run()
