@@ -16,9 +16,10 @@ def writeLyrics(csvFiletoRead, csvFiletoWrite):
         # trueartist = genius.search_artist(artist)
         song = row[0]
         # words = lyrics(artist, song)
-        lyrics = genius.search_song(song, artist)
+        song = genius.search_song(song, artist)
         # writer.writerow({'Title': song,'Artist': artist,'Lyrics': words})
-        writer.writerow([row[0], row[1], lyrics])
+        if song is not None:
+            writer.writerow([row[0], row[1], song.lyrics])
     openCSVtoWrite.close()
     openCSVtoRead.close()
 
