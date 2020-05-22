@@ -2,6 +2,7 @@ import csv
 import lyricsgenius
 from cleandata import run, removeBlanks
 from analyzelyrics import runAnalysis
+from visualize import visualize
 
 # Spotify files
 spotify = "Mining&Gathering/SongRecommender/Spotify/updatedspotify.csv"
@@ -33,7 +34,7 @@ importnewdata = False
 cleandata = False
 blanks = False
 analyzeLyrics = False
-
+plotting = True
 
 def writeLyrics(csvFiletoRead, csvFiletoWrite):
     openCSVtoRead = open(csvFiletoRead, 'r')
@@ -74,3 +75,5 @@ if __name__ == "__main__":
         removeBlanks(final, cleaned)
     if analyzeLyrics:
         runAnalysis()
+    if plotting:
+        visualize()
