@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import csv
 
-analyzed = "Mining&Gathering/SongRecommender/analyzed.csv"
+analyzed = "Mining/SongRecommender/analyzed.csv"
 
 def visualize():
     openCSVtoRead = open(analyzed, 'r')
@@ -14,6 +14,7 @@ def visualize():
         xcoords.append(x)
         y = row[5]
         ycoords.append(y)
+        color = 'red'
         if row[3] == "positive":
             color = 'red'
         elif row[3] == "negative":

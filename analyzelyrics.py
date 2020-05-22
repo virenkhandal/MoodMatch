@@ -12,8 +12,8 @@ def authenticate_client():
             endpoint=endpoint, credential=ta_credential)
     return text_analytics_client
 
-cleaned = "Mining&Gathering/SongRecommender/cleaned.csv"
-analyzed = "Mining&Gathering/SongRecommender/analyzed.csv"
+cleaned = "Mining/SongRecommender/cleaned.csv"
+analyzed = "Mining/SongRecommender/analyzed.csv"
 
 
 client = authenticate_client()

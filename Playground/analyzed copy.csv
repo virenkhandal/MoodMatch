@@ -1,3 +1,4 @@
+Song,Artist,Lyrics,Rating,Pos,Neg,Ntr
 Sunday Best,Surfaces,"[Intro: Forrest]
 Good, feeling good
 
@@ -281,7 +282,7 @@ Lonely (Super lonely)
 La-la-la-la, la-la-la-la (I've been lonely, I've been lonely)
 Lonely (I've been lonely, by the way)
 La-la-la-la, la-la-la-la
-Lonely (I've been lonely)",negative,0.01,0.99,0.0
+Lonely (I've been lonely)",negative,0.01,0.99,0
 Honeypie,JAWNY,"[Chorus]
 Ooh, girl, don't you stop
 Don't you stop 'til you get enough, honey
@@ -399,7 +400,7 @@ I want your heart
 Just for a minute
 Come by
 And let me finish
-On you",positive,0.98,0.02,0.0
+On you",positive,0.98,0.02,0
 Chemicals,SG Lewis,"[Verse 1]
 She knows, she knows what she's done
 And finally, I’m fallin' under
@@ -831,7 +832,7 @@ Falling for you, only for you
 We got lost in a daydream
 You can't help but just cave in
 Lose control if you mean it
-Falling for you, only for you",mixed,0.25,0.75,0.0
+Falling for you, only for you",mixed,0.25,0.75,0
 Group Therapy,Elohim,"[Verse 1]
 Sun comes up, layin' in bed
 Up too late, feel like I'm dead
@@ -1054,7 +1055,7 @@ La-la-la-la-la
 La-la-la-la-la-la-la
 La-la-la-la-la
 La-la-la-la-la-la-la
-La-la-la-la-la",mixed,0.67,0.33,0.0
+La-la-la-la-la",mixed,0.67,0.33,0
 EARFQUAKE,"Tyler, The Creator","[Intro: Tyler, The Creator & Playboi Carti]
 For real, for real this time
 For real, for real, for real this time
@@ -1413,7 +1414,7 @@ Smoke an OZ, man, I love to get high
 It's gon' be a good day
 I'ma have a good day 'cause I had a long night
 Rollin' with my niggas and they never switching sides
-Smoke an OZ, man, I love to get high",positive,0.91,0.09,0.0
+Smoke an OZ, man, I love to get high",positive,0.91,0.09,0
 Running Red Lights (feat. Rivers Cuomo & Pink Siifu),The Avalanches,"[Chorus]
 Running, running red lights
 Red lights, red lights
@@ -1735,7 +1736,7 @@ Poured up a four, now that's blueberry Faygo (Lean)
 One false move and we straight to shootin' shit
 Two small bands just to take you out real quick (Bands)
 Three more hoes, pull up, I'm fucking shit (Yeah)
-That's how it go, big bands, I'm thumbin' shit",negative,0.03,0.97,0.0
+That's how it go, big bands, I'm thumbin' shit",negative,0.03,0.97,0
 Blinding Lights,The Weeknd,"[Intro]
 Yeah
 
@@ -2591,7 +2592,7 @@ I be with some steppers, I don't care 'bout what you gon' do
 Wet shit like the Warriors, all my niggas gon' shoot
 He gon' have to take a loss, some my niggas gone too
 I know a bad bitch and I'm who she belong to
-I just picked a Cuban up from Wafi, bitch, these stones new",negative,0.14,0.86,0.0
+I just picked a Cuban up from Wafi, bitch, these stones new",negative,0.14,0.86,0
 Circles,Post Malone,"[Intro]
 Oh, oh, oh
 Oh,  oh, oh
@@ -2830,7 +2831,7 @@ Lord your the best thing
 And i dont need a witness
 You're on fire, yh your grace is still perfect fitness
 
-Chrous: He's grace and Mercy ...........",positive,0.67,0.33,0.0
+Chrous: He's grace and Mercy ...........",positive,0.67,0.33,0
 Don't Start Now,Dua Lipa,"[Intro]
 If you don't wanna see me
 
@@ -3784,7 +3785,7 @@ I sing a secret song to you each night we are apart
 Remember me though I have to travel far
 Remember me each time you hear a sad guitar
 Know that I'm with you the only way that I can be
-Until you're in my arms again, remember me",negative,0.03,0.97,0.0
+Until you're in my arms again, remember me",negative,0.03,0.97,0
 Never Too Late,Elton John,"[Intro]
 Qinisa
 Qinisa mfana nge gazi lemvana
@@ -3924,7 +3925,7 @@ I'm gonna live the high life...
 I'm gonna do my best to take my place in the sun...
 
 [Louis, Naveen, and Tiana]
-When we're human!",positive,0.97,0.03,0.0
+When we're human!",positive,0.97,0.03,0
 Dig a Little Deeper,Jenifer Lewis,"[Verse 1]
 Don't matter what you look like
 Don't matter what you wear
@@ -4388,7 +4389,7 @@ Fighting the truth, trying to hide
 But I think it's alright, girl
 Yeah, I think it's alright, girl, ooh
 
-[Produced by Russ]",negative,0.35,0.65,0.0
+[Produced by Russ]",negative,0.35,0.65,0
 Saved,Khalid,"[Intro]
 2, 3, 4
 
@@ -4448,7 +4449,7 @@ You're missing me the way I'm missing you
 So I'll keep your number saved
 'Cause I hope one day I'll get the pride to call you
 To tell you that I'm finally over you
-I'm finally over you",positive,0.98,0.02,0.0
+I'm finally over you",positive,0.98,0.02,0
 From Time,Drake,"[Intro: Jhené Aiko]
 What's up?
 Been a minute since we kicked it, you've been caught up
@@ -4600,7 +4601,7 @@ She knows I love her
 She knows, she does
 But it's cool because
 It's me she loves
-She knows, she does",positive,0.91,0.09,0.0
+She knows, she does",positive,0.91,0.09,0
 You Can't Save Me,SiR,"[Verse 1]
 In another time, in another place
 You would be mine
@@ -5244,7 +5245,7 @@ The distance and the time between us
 It'll never change my mind, 'cause baby
 I would die for you
 Baby, I would die for you, yeah babe
-(Die for you)",negative,0.22,0.78,0.0
+(Die for you)",negative,0.22,0.78,0
 Thinkin Bout You,Frank Ocean,"[Verse 1]
 A tornado flew around my room before you came
 Excuse the mess it made, it usually doesn't rain in
@@ -5499,7 +5500,7 @@ Down to my core
 Ooh, didn't know it before
 Surprised when you caught me off guard
 All this damn jewelry I bought
-You was my shorty, I thought",negative,0.05,0.95,0.0
+You was my shorty, I thought",negative,0.05,0.95,0
 Don't,Bryson Tiller,"[Verse 1]
 Don't, don't play with her, don't be dishonest (Ayy)
 Still not understandin' this logic (Ayy)
@@ -5767,7 +5768,7 @@ Doesn't mean we shouldn't try
 Just because it won't come easily
 Doesn't mean we shouldn't try, try, try
 Just because it won't come easily
-Doesn't mean we shouldn't try",negative,0.07,0.93,0.0
+Doesn't mean we shouldn't try",negative,0.07,0.93,0
 Beautiful People (feat. Khalid),Ed Sheeran,"[Intro: Ed Sheeran]
 We are, we are, we are
 ما هستیم، هستیم، هستیم ...
@@ -6024,7 +6025,7 @@ Lord your the best thing
 And i dont need a witness
 You're on fire, yh your grace is still perfect fitness
 
-Chrous: He's grace and Mercy ...........",positive,0.67,0.33,0.0
+Chrous: He's grace and Mercy ...........",positive,0.67,0.33,0
 Up All Night,Khalid,"[Verse 1]
 Take me 'round the world and back again
 As I'm searching for my soul out there
@@ -6886,7 +6887,7 @@ I promise that I'll love you for the rest of my life
 
 [Outro]
 And there'll never be another
-I promise that I'll love you for the rest of my life",positive,1.0,0.0,0.0
+I promise that I'll love you for the rest of my life",positive,1,0,0
 I Love You's,Hailee Steinfeld,"[Intro]
 Doo-bee-doo-bee-doo-doo-doo, ah
 Doo-bee-doo-bee-doo-doo-doo, ah
@@ -7370,7 +7371,7 @@ Hair toss, check my nails (Oh, hey)
 Baby, how you feelin'? (Feelin' good as hell) (Yeah)
 (Feelin' good as hell)
 Baby, how you feelin'? (Feelin' good as hell)
-(Haha, I danced, that's what I did)",mixed,0.87,0.13,0.0
+(Haha, I danced, that's what I did)",mixed,0.87,0.13,0
 Memories,Maroon 5,"[Chorus]
 Here's to the ones that we got
 Cheers to the wish you were here, but you're not
@@ -7543,7 +7544,7 @@ The house don't fall when the bones are good
 
 [Outro: Maren Morris & Hozier]
 Yeah, ooh
-Ooh",positive,0.76,0.24,0.0
+Ooh",positive,0.76,0.24,0
 Body Back (feat. Maia Wright),Gryffin,"[Verse 1]
 Who cares what the world's gonna say?
 'Cause you know they're gonna say it anyway
@@ -7788,7 +7789,7 @@ Yeah, that's what I like about ya
 (Ooh, make me bad and I don't know)
 (Ooh, make me bad and I don't know)
 (Ooh) That's what I like about ya
-(Ooh) Yeah, that's what I like about ya",negative,0.1,0.9,0.0
+(Ooh) Yeah, that's what I like about ya",negative,0.1,0.9,0
 Sing It With Me,JP Cooper,"[Verse 1: JP Cooper]
 I keep seeing you lately
 Singing your favorite songs out loud
@@ -8704,7 +8705,7 @@ Just say nothin', small talk only gets in the way
 Just say nothing, oh, oh
 Oh, oh, small talk (If you want it)
 Just say nothing (You can have it, yeah)
-Oh, no, small talk",negative,0.01,0.99,0.0
+Oh, no, small talk",negative,0.01,0.99,0
 Higher Love,Kygo,"[Intro]
 Bring me higher love, love
 Bring me higher love
@@ -8780,7 +8781,7 @@ A higher love I keep thinking of, oh
 Bring me a higher love
 (Bring me higher love, love)
 Bring me a higher love, oh
-(Bring me higher love)",mixed,0.83,0.17,0.0
+(Bring me higher love)",mixed,0.83,0.17,0
 Perfect to Me,Anne-Marie,"[Chorus]
 Don't feel like putting makeup on my cheeks
 Do what I wanna
@@ -10318,7 +10319,7 @@ Lord your the best thing
 And i dont need a witness
 You're on fire, yh your grace is still perfect fitness
 
-Chrous: He's grace and Mercy ...........",positive,0.67,0.33,0.0
+Chrous: He's grace and Mercy ...........",positive,0.67,0.33,0
 Roses (Imanbek Remix),SAINt JHN,"[Verse 1]
 Roses
 I walked in the corner with the body screaming dolo
@@ -10513,7 +10514,7 @@ Baby, you're playin' hard to forget
 
 [Outro]
 Oh honey, I'm fallin' apart
-And you're playin' hard to forget",mixed,0.49,0.51,0.0
+And you're playin' hard to forget",mixed,0.49,0.51,0
 Angels & Demons,jxdn,"[Verse 1]
 Two face, two face, yeah
 Black, white, left, right, yeah
@@ -10664,7 +10665,7 @@ Some day when we aren't six feet apart
 
 [Outro]
 There will be light after dark
-Some day when we aren't six feet apart",positive,0.56,0.44,0.0
+Some day when we aren't six feet apart",positive,0.56,0.44,0
 Sunday Best,Surfaces,"[Intro: Forrest]
 Good, feeling good
 
@@ -11342,7 +11343,7 @@ Keep a bluebird in my heart
 [Outro]
 Ooh
 And the bluebird sings
-Ooh",positive,0.68,0.32,0.0
+Ooh",positive,0.68,0.32,0
 Bloody Valentine,Machine Gun Kelly,"[Verse 1]
 Okay
 The simulation just went bad
@@ -12285,7 +12286,7 @@ So I hope you're happy now
 [Outro: Carly Pearce & Lee Brice, Lee Brice]
 Happy now
 Oh, I hope you're happy now
-Mmm",positive,0.6,0.4,0.0
+Mmm",positive,0.6,0.4,0
 The Box,Roddy Ricch,"[Chorus]
 Pullin' out the coupe at the lot
 Told 'em fuck 12, fuck SWAT
@@ -13519,7 +13520,7 @@ But it wasn't enough, it wasn't enough, no, no
 [Outro]
 I take the long way home
 I ask the traffic lights if it'll be alright
-They say, ""I don't know""",mixed,0.43,0.57,0.0
+They say, ""I don't know""",mixed,0.43,0.57,0
 If the World Was Ending (feat. Julia Michaels),JP Saxe & Julia Michaels,"[Verse 1]
 
 [H.E.R., Niall Horan & Keith Urban]
@@ -14803,7 +14804,7 @@ Lord your the best thing
 And i dont need a witness
 You're on fire, yh your grace is still perfect fitness
 
-Chrous: He's grace and Mercy ...........",positive,0.67,0.33,0.0
+Chrous: He's grace and Mercy ...........",positive,0.67,0.33,0
 Life Is Good,Future Featuring Drake,"[Part I]
 
 [Chorus: Drake]
@@ -15055,7 +15056,7 @@ And you're not here to get me through it all
 I let my guard down and then you pulled the rug
 I was getting kinda used to being someone you loved
 I let my guard down and then you pulled the rug
-I was getting kinda used to being someone you loved",positive,0.61,0.39,0.0
+I was getting kinda used to being someone you loved",positive,0.61,0.39,0
 Everything I Wanted,Billie Eilish,"[Verse 1]
 I had a dream
 I got everything I wanted
@@ -15184,7 +15185,7 @@ Poured up a four, now that's blueberry Faygo (Lean)
 One false move and we straight to shootin' shit
 Two small bands just to take you out real quick (Bands)
 Three more hoes, pull up, I'm fucking shit (Yeah)
-That's how it go, big bands, I'm thumbin' shit",negative,0.03,0.97,0.0
+That's how it go, big bands, I'm thumbin' shit",negative,0.03,0.97,0
 Falling,Trevor Daniel,"[Intro]
 Oh
 Ooh, ooh
@@ -15555,7 +15556,7 @@ So I hope you're happy now
 [Outro: Carly Pearce & Lee Brice, Lee Brice]
 Happy now
 Oh, I hope you're happy now
-Mmm",positive,0.6,0.4,0.0
+Mmm",positive,0.6,0.4,0
 Hot Girl Bummer,blackbear,"BLACKBEAR:
 Fuck you, and you and you
 I hate your friends and they hate me too
@@ -15641,7 +15642,7 @@ This the hot girl bummer anthem turn it up and throw a tantrum
 Fuck you, and you and you
 I hate your friends and they hate me too
 Fuck you, and you and you
-This the hot girl bummer anthem turn it up and throw a tantrum",negative,0.07,0.93,0.0
+This the hot girl bummer anthem turn it up and throw a tantrum",negative,0.07,0.93,0
 Beer Can't Fix,Thomas Rhett Featuring Jon Pardi,"[Verse 1: Thomas Rhett]
 You're all alone at a party, you wanna dance with somebody
 But you ain't got a clue how to ask
@@ -15843,7 +15844,7 @@ Lonely (Super lonely)
 La-la-la-la, la-la-la-la (I've been lonely, I've been lonely)
 Lonely (I've been lonely, by the way)
 La-la-la-la, la-la-la-la
-Lonely (I've been lonely)",negative,0.01,0.99,0.0
+Lonely (I've been lonely)",negative,0.01,0.99,0
 Heart On Ice,Rod Wave,"[Intro]
 SpeakerBangerz
 Look, uh, look
@@ -15879,7 +15880,7 @@ Yeah, yeah
 Yeah, yeah
 Yeah, yeah, yeah
 Yeah, yeah
-Brrt",negative,0.45,0.55,0.0
+Brrt",negative,0.45,0.55,0
 Ballin',Mustard & Roddy Ricch,"[Intro]
 I don't really wanna go
 I don't really wanna stay
@@ -16030,7 +16031,7 @@ Police had raided our spot, so we went to the next street
 Play like I'm dumb, as soon as it pop, I'm goin' retarded
 He say I'm hard and he say I'm garbage, I'm rich regardless
 We in Miami in the middle of the winter, and we on them jet skis
-If we in Atlanta, I'm runnin' the 'Cat and I'm workin' the red key",negative,0.2,0.8,0.0
+If we in Atlanta, I'm runnin' the 'Cat and I'm workin' the red key",negative,0.2,0.8,0
 Hard To Forget,Sam Hunt,"[Intro]
 There stands the glass
 That will ease all my pain
@@ -16112,7 +16113,7 @@ Baby, you're playin' hard to forget
 
 [Outro]
 Oh honey, I'm fallin' apart
-And you're playin' hard to forget",mixed,0.49,0.51,0.0
+And you're playin' hard to forget",mixed,0.49,0.51,0
 Sum 2 Prove,Lil Baby,"[Verse 1]
 You know Lil Ced, that's my nigga, I made him a millionaire, fuck it, we all rich
 I ain't tryna have babies right now, so we fuck with the rubber, but I got a raw bitch
@@ -16778,7 +16779,7 @@ I always look the other way
 I'm blind, I'm blind
 In your eyes
 You lie, but I don't let it define you
-Oh, define you",negative,0.17,0.83,0.0
+Oh, define you",negative,0.17,0.83,0
 We Paid,Lil Baby & 42 Dugg,"[Intro: 42 Dugg]
 Can't be fucked with
 Ayy, 4 Pockets, huh
@@ -17610,7 +17611,7 @@ I'm ready (I'm ready), I'm ready (I'm ready)
 For someone to love me (For someone to love me)
 I'm ready (I'm ready), I'm ready (I'm ready)
 I'm ready (I'm ready), I'm ready (I'm ready)
-For someone to love me, for someone to love me",positive,0.68,0.32,0.0
+For someone to love me, for someone to love me",positive,0.68,0.32,0
 In Between,Scotty McCreery,"[Verse 1]
 I'm a little bit a ball cap
 Little bit a pearl snap button down shirt

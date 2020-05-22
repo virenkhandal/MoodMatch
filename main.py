@@ -5,28 +5,28 @@ from analyzelyrics import runAnalysis
 from visualize import visualize
 
 # Spotify files
-spotify = "Mining&Gathering/SongRecommender/Spotify/updatedspotify.csv"
-spotifyClean = "Mining&Gathering/SongRecommender/Spotify/spotifyClean.csv"
+spotify = "Mining/SongRecommender/Spotify/updatedspotify.csv"
+spotifyClean = "Mining/SongRecommender/Spotify/spotifyClean.csv"
 
 # Genius files
-genius = "Mining&Gathering/SongRecommender/Genius/updatedgenius.csv"
-geniusClean = "Mining&Gathering/SongRecommender/Genius/geniusClean.csv"
+genius = "Mining/SongRecommender/Genius/updatedgenius.csv"
+geniusClean = "Mining/SongRecommender/Genius/geniusClean.csv"
 
 # Pop Vortex files
-popvortex = "Mining&Gathering/SongRecommender/PopVortex/updatedpopvortex.csv"
-popvortexClean = "Mining&Gathering/SongRecommender/PopVortex/popvortexClean.csv"
+popvortex = "Mining/SongRecommender/PopVortex/updatedpopvortex.csv"
+popvortexClean = "Mining/SongRecommender/PopVortex/popvortexClean.csv"
 
 # Billboard files
-billboard = "Mining&Gathering/SongRecommender/Billboard/updatedbillboard.csv"
-billboardClean = "Mining&Gathering/SongRecommender/Billboard/billboardClean.csv"
+billboard = "Mining/SongRecommender/Billboard/updatedbillboard.csv"
+billboardClean = "Mining/SongRecommender/Billboard/billboardClean.csv"
 
 # Merge data file
-merge = "Mining&Gathering/SongRecommender/merged.csv"
+merge = "Mining/SongRecommender/merged.csv"
 
 # Final cleaned data file
-final = "Mining&Gathering/SongRecommender/final.csv"
-cleaned = "Mining&Gathering/SongRecommender/cleaned.csv"
-analyzed = "Mining&Gathering/SongRecommender/analyzed.csv"
+final = "Mining/SongRecommender/final.csv"
+cleaned = "Mining/SongRecommender/cleaned.csv"
+analyzed = "Mining/SongRecommender/analyzed.csv"
 
 genius = lyricsgenius.Genius("m17kwEB8esoXIGoiSWAxM-HxuVSPTnZ9YAXct_HBNh_O4y6BoNRQa5TrIkMH_l6C")
 
@@ -59,14 +59,14 @@ def writeLyrics(csvFiletoRead, csvFiletoWrite):
 if __name__ == "__main__":
     if importnewdata:
         print("Importing new data...")
-        writeLyrics("Mining&Gathering/SongRecommender/Spotify/spotify.csv",
-                    "Mining&Gathering/SongRecommender/Spotify/updatedspotify.csv")
-        writeLyrics("Mining&Gathering/SongRecommender/Billboard/billboard.csv",
-                    "Mining&Gathering/SongRecommender/Billboard/updatedbillboard.csv")
-        writeLyrics("Mining&Gathering/SongRecommender/PopVortex/popvortex.csv",
-                    "Mining&Gathering/SongRecommender/PopVortex/updatedpopvortex.csv")
-        writeLyrics("Mining&Gathering/SongRecommender/Genius/genius.csv",
-                    "Mining&Gathering/SongRecommender/Genius/updatedgenius.csv")
+        writeLyrics("Mining/SongRecommender/Spotify/spotify.csv",
+                    "Mining/SongRecommender/Spotify/updatedspotify.csv")
+        writeLyrics("Mining/SongRecommender/Billboard/billboard.csv",
+                    "Mining/SongRecommender/Billboard/updatedbillboard.csv")
+        writeLyrics("Mining/SongRecommender/PopVortex/popvortex.csv",
+                    "Mining/SongRecommender/PopVortex/updatedpopvortex.csv")
+        writeLyrics("Mining/SongRecommender/Genius/genius.csv",
+                    "Mining/SongRecommender/Genius/updatedgenius.csv")
     if cleandata:
         print("Cleaning data...")
         run()
