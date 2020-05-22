@@ -1,6 +1,5 @@
 from azure.ai.textanalytics import TextAnalyticsClient
 from azure.core.credentials import AzureKeyCredential
-from main import cleaned, analyzed
 import csv
 
 key = "eefd7a51fe184ef382bc1db79d003b69"
@@ -12,6 +11,9 @@ def authenticate_client():
     text_analytics_client = TextAnalyticsClient(
             endpoint=endpoint, credential=ta_credential)
     return text_analytics_client
+
+cleaned = "Mining&Gathering/SongRecommender/cleaned.csv"
+analyzed = "Mining&Gathering/SongRecommender/analyzed.csv"
 
 
 client = authenticate_client()

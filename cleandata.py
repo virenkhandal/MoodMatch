@@ -2,27 +2,27 @@ import pandas as pd
 import csv
 
 # Spotify files
-spotify = "SongRecommender/Spotify/updatedspotify.csv"
-spotifyClean = "SongRecommender/Spotify/spotifyClean.csv"
+spotify = "Mining&Gathering/SongRecommender/Spotify/updatedspotify.csv"
+spotifyClean = "Mining&Gathering/SongRecommender/Spotify/spotifyClean.csv"
 
 # Genius files
-genius = "SongRecommender/Genius/updatedgenius.csv"
-geniusClean = "SongRecommender/Genius/geniusClean.csv"
+genius = "Mining&Gathering/SongRecommender/Genius/updatedgenius.csv"
+geniusClean = "Mining&Gathering/SongRecommender/Genius/geniusClean.csv"
 
 # Pop Vortex files
-popvortex = "SongRecommender/PopVortex/updatedpopvortex.csv"
-popvortexClean = "SongRecommender/PopVortex/popvortexClean.csv"
+popvortex = "Mining&Gathering/SongRecommender/PopVortex/updatedpopvortex.csv"
+popvortexClean = "Mining&Gathering/SongRecommender/PopVortex/popvortexClean.csv"
 
 # Billboard files
-billboard = "SongRecommender/Billboard/updatedbillboard.csv"
-billboardClean = "SongRecommender/Billboard/billboardClean.csv"
+billboard = "Mining&Gathering/SongRecommender/Billboard/updatedbillboard.csv"
+billboardClean = "Mining&Gathering/SongRecommender/Billboard/billboardClean.csv"
 
 # Merge data file
-merge = "SongRecommender/merged.csv"
+merge = "Mining&Gathering/SongRecommender/merged.csv"
 
 # Final cleaned data file
-final = "SongRecommender/final.csv"
-cleaned = "SongRecommender/cleaned.csv"
+final = "Mining&Gathering/SongRecommender/final.csv"
+cleaned = "Mining&Gathering/SongRecommender/cleaned.csv"
 
 
 def clean(csvFiletoRead, csvFiletoWrite):
