@@ -1,5 +1,6 @@
 from azure.ai.textanalytics import TextAnalyticsClient
 from azure.core.credentials import AzureKeyCredential
+from main import cleaned, analyzed
 import csv
 
 key = "eefd7a51fe184ef382bc1db79d003b69"
@@ -16,24 +17,18 @@ def authenticate_client():
 client = authenticate_client()
 
 
-def sentiment_analysis_example(client):
-    documents = ["I had the best day of my life. I wish you were there with me."]
-    response = client.analyze_sentiment(documents=documents)[0]
-    print("Document Sentiment: {}".format(response.sentiment))
-    print("Overall scores: positive={0:.2f}; neutral={1:.2f}; negative={2:.2f} \n".format(
-        response.confidence_scores.positive,
-        response.confidence_scores.neutral,
-        response.confidence_scores.negative,
-    ))
-    for idx, sentence in enumerate(response.sentences):
-        print("[Length: {}]".format(sentence.grapheme_length))
-        print("Sentence {} sentiment: {}".format(idx + 1, sentence.sentiment))
-        print("Sentence score:\nPositive={0:.2f}\nNeutral={1:.2f}\nNegative={2:.2f}\n".format(
-            sentence.confidence_scores.positive,
-            sentence.confidence_scores.neutral,
-            sentence.confidence_scores.negative,
-        ))
+def analyze(client):
+    openCSVtoRead = open(cleaned, 'r')
+    reader = csv.reader(openCSVtoRead)
+    openCSVtoWrite = open(analyzed, 'w')
+    writer = csv.writer(openCSVtoWrite)
+    for row in reader:
+        response = client.analyze_sentiment(documents=[row[2]])[0]
+        positive = response.confidence_scores.positive
+        negative = response.confidence_scores.negative
+        neutral = response.confidence_scores.neutral
+        writer.writerow([row[0], row[1], row[2], response.sentiment, positive, negative, neutral])
 
 
-sentiment_analysis_example(client)
-
+def runAnalysis():
+    analyze(client)

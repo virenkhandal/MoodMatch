@@ -1,6 +1,7 @@
 import csv
 import lyricsgenius
 from cleandata import run, removeBlanks
+from analyzelyrics import runAnalysis
 
 # Spotify files
 spotify = "SongRecommender/Spotify/updatedspotify.csv"
@@ -24,12 +25,14 @@ merge = "SongRecommender/merged.csv"
 # Final cleaned data file
 final = "SongRecommender/final.csv"
 cleaned = "SongRecommender/cleaned.csv"
+analyzed = "SongRecommender/analyzed.csv"
 
 genius = lyricsgenius.Genius("m17kwEB8esoXIGoiSWAxM-HxuVSPTnZ9YAXct_HBNh_O4y6BoNRQa5TrIkMH_l6C")
 
 importnewdata = False
 cleandata = False
 blanks = False
+analyzeLyrics = False
 
 
 def writeLyrics(csvFiletoRead, csvFiletoWrite):
@@ -65,3 +68,5 @@ if __name__ == "__main__":
     if blanks:
         print("Removing blanks from data...")
         removeBlanks(final, cleaned)
+    if analyzeLyrics:
+        runAnalysis()
