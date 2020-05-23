@@ -11,16 +11,14 @@ def visualize():
     colors = []
     for row in reader:
         x = row[4]
-        xcoords.append(x)
         y = row[5]
+        xcoords.append(x)
         ycoords.append(y)
         color = 'red'
         if row[3] == "positive":
-            color = 'red'
+            color = 'green'
         elif row[3] == "negative":
             color = 'blue'
-        elif row[3] == "mixed":
-            color = 'green'
         colors.append(color)
     plt.scatter(xcoords, ycoords, color=colors)
     plt.show()

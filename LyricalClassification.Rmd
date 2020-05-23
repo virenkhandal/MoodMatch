@@ -7,6 +7,12 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(cluster)
+library(ggplot2)
+library("cluster")
+library("factoextra")
+library("magrittr")
+library(NbClust)
 ```
 
 ## R Markdown
@@ -17,13 +23,98 @@ When you click the **Knit** button a document will be generated that includes bo
 
 ```{r}
 newdataset <- read.csv("/Users/pnk2304/PycharmProjects/SongRecommender/Mining/SongRecommender/analyzed.csv", TRUE)
+
+truedata <- newdataset[,c(1,5,6,7)]
+truedata$Song <- as.numeric(truedata$Song)
+
+truedatacopy <- truedata
 ```
 
 ```{r}
+song <- newdataset$Song
 positiveRatings <- newdataset$Pos
 negativeRatings <- newdataset$Neg
 neutralRatings <- newdataset$Ntr
 
-df <- data.frame(positiveRatings, negativeRatings, neutralRatings)
+
+df <- data.frame(song, positiveRatings, negativeRatings, neutralRatings)
+df
+
+res.dist <- get_dist(truedata, stand = TRUE, method = "pearson")
+#fviz_dist(res.dist, 
+#   gradient = list(low = "#00AFBB", mid = "white", high = "#FC4E07"))
+
+#ggplot(df)
+#fit <- kmeans(df, 4)
+#clusplot(df, fit$cluster, color=TRUE, shade=TRUE, labels=2, lines=0)
 ```
+
+```{r}
+fviz_nbclust(truedata, kmeans, method = "gap_stat")
+```
+
+```{r}
+set.seed(123)
+km.res <- kmeans(truedata, 1, nstart = 25)
+fviz_cluster(km.res, data = truedata,
+             ellipse.type = "convex",
+             palette = "jco",
+             ggtheme = theme_minimal())
+```
+
+```{r}
+df$norm <- sqrt((positiveRatings * positiveRatings) + (negativeRatings * negativeRatings))
+plot(df$norm)
+plot(positiveRatings, negativeRatings)
+```
+
+```{r}
+norm <- df$norm
+i <- 0
+vec <- vector("list", 293)
+for (dist in norm) {
+  if (norm == 1){
+    ifelse(positiveRatings[i] > negativeRatings[i], vec[i] <- "Happiest", vec[i] <- "Saddest")
+    i <- i + 1
+  } else if (0.9 < norm){
+    ifelse(positiveRatings[i] > negativeRatings[i], vec[i] <- "Cheerful", vec[i] <- "Depressing")
+    i <- i + 1
+  } else if (0.8 < norm){
+    ifelse(positiveRatings[i] > negativeRatings[i], vec[i] <- "Dance", vec[i] <- "Simp")
+    i <- i + 1
+  } else if (0.7 < norm){
+    ifelse(positiveRatings[i] > negativeRatings[i], vec[i] <- "Happy", vec[i] <- "Rainy Day")
+    i <- i + 1
+  } else if (0.6 < norm){
+    ifelse(positiveRatings[i] > negativeRatings[i], vec[i] <- "Decent", vec[i] <- "Sad")
+    i <- i + 1
+  } else if (0.4 < norm){
+    ifelse(positiveRatings[i] > negativeRatings[i], vec[i] <- "Slightly Happy", vec[i] <- "Slightly Sad")
+    i <- i + 1
+  } else{
+    vec[i] <- "Neutral"
+    i <- i + 1
+  }
+}
+df$vibe <- vec
+df
+```
+
+```{r}
+summary(str(df$vibe))
+# counts <- table(df$vibe[])
+# barplot(counts)
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
