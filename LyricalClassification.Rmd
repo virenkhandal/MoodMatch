@@ -24,6 +24,9 @@ When you click the **Knit** button a document will be generated that includes bo
 ```{r}
 newdataset <- read.csv("/Users/pnk2304/PycharmProjects/SongRecommender/Mining/SongRecommender/analyzed.csv", TRUE)
 
+artist <- newdataset$Artist
+rating <- newdataset$Rating
+
 truedata <- newdataset[,c(1,5,6,7)]
 truedata$Song <- as.numeric(truedata$Song)
 
@@ -67,31 +70,46 @@ df$norm <- sqrt((positiveRatings * positiveRatings) + (negativeRatings * negativ
 plot(df$norm)
 plot(positiveRatings, negativeRatings)
 ```
+```{r}
+breaks <- c(0, 0.4, 0.6, 0.7, 0.8, 0.9, 1, 2)
+tags <- c("1","2", "3", "4", "5", "6","7")
+
+group_tags <- cut(df$norm, breaks=breaks, include.lowest = TRUE, right=FALSE, labels = tags)
+
+summary(group_tags)
+```
 
 ```{r}
 norm <- df$norm
 i <- 0
 vec <- vector("list", 293)
 for (dist in norm) {
-  if (norm == 1){
+  if (dist == 1){
+    print("norm is 1")
     ifelse(positiveRatings[i] > negativeRatings[i], vec[i] <- "Happiest", vec[i] <- "Saddest")
     i <- i + 1
-  } else if (0.9 < norm){
+  } else if (0.9 < dist){
+    print("norm > 0.9")
     ifelse(positiveRatings[i] > negativeRatings[i], vec[i] <- "Cheerful", vec[i] <- "Depressing")
     i <- i + 1
-  } else if (0.8 < norm){
+  } else if (0.8 < dist){
+    print("norm > 0.8")
     ifelse(positiveRatings[i] > negativeRatings[i], vec[i] <- "Dance", vec[i] <- "Simp")
     i <- i + 1
-  } else if (0.7 < norm){
+  } else if (0.7 < dist){
+    print("norm > 0.7")
     ifelse(positiveRatings[i] > negativeRatings[i], vec[i] <- "Happy", vec[i] <- "Rainy Day")
     i <- i + 1
-  } else if (0.6 < norm){
+  } else if (0.6 < dist){
+    print("norm > 0.6")
     ifelse(positiveRatings[i] > negativeRatings[i], vec[i] <- "Decent", vec[i] <- "Sad")
     i <- i + 1
-  } else if (0.4 < norm){
+  } else if (0.4 < dist){
+    print("norm > 0.4")
     ifelse(positiveRatings[i] > negativeRatings[i], vec[i] <- "Slightly Happy", vec[i] <- "Slightly Sad")
     i <- i + 1
   } else{
+    print("norm < 0.4")
     vec[i] <- "Neutral"
     i <- i + 1
   }
@@ -106,15 +124,18 @@ summary(str(df$vibe))
 # barplot(counts)
 ```
 
+```{r}
+df$artist <- artist
+df$rating <- rating
 
+col_order <- c("song", "artist", "vibe",
+               "rating")
 
+newdf <- df[, col_order]
 
+newdf$vibe <- as.character(newdf$vibe)
 
+write.csv(newdf, "/Users/pnk2304/PycharmProjects/SongRecommender/Mining/SongRecommender/vibed.csv")
 
-
-
-
-
-
-
-
+newdf
+```
