@@ -155,7 +155,34 @@ function handlePostback(sender_psid, received_postback) {
 
   // Set the response based on the postback payload
   if (payload === '<postback_payload>') {
-    response = { "text": "Hi! Let's find you some songs to fit your mood!" }
+    response = { "text": "Hi! Let's find you some songs to fit your mood!"
+            {
+            "persistent_menu": [
+                {
+                    "locale": "default",
+                    "composer_input_disabled": false,
+                    "call_to_actions": [
+                        {
+                            "type": "postback",
+                            "title": "Talk to an agent",
+                            "payload": "CARE_HELP"
+                        },
+                        {
+                            "type": "postback",
+                            "title": "Outfit suggestions",
+                            "payload": "CURATION"
+                        },
+                        {
+                            "type": "web_url",
+                            "title": "Shop now",
+                            "url": "https://www.originalcoastclothing.com/",
+                            "webview_height_ratio": "full"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
   } else if (payload === 'no') {
     response = { "text": "Oops, try sending another image." }
   }
