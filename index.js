@@ -90,8 +90,8 @@ function handleMessage(sender_psid, received_message) {
     // Create the payload for a basic text message, which
     // will be added to the body of our request to the Send API
     response = {
-      "text": `How are you doing today? If you can answer a few of my questions, I will be able to recommend you three to five songs
-       that will definitely ameliorate your day!`
+      "text": `How are you doing today? If you can answer a few of my questions, I will be able to recommend you three to five songs that will definitely ameliorate your day!`,
+      "text": `Which of the following words`
     }
   } else if (received_message.attachments) {
     // Get the URL of the message attachment
