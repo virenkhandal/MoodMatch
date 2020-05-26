@@ -1,0 +1,24 @@
+{
+  "name": "songrecommender",
+  "version": "1.0.0",
+  "description": "This is a song recommendation app.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/virenkhandal/SongRecommender.git"
+  },
+  "author": "Viren Khandal",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/virenkhandal/SongRecommender/issues"
+  },
+  "homepage": "https://github.com/virenkhandal/SongRecommender#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "request": "^2.88.2"
+  }
+}
