@@ -1,4 +1,4 @@
-const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN
+const PAGE_ACCESS_TOKEN = 'EAAD04ncSFgEBAPhp2o2kwc132nLwjItWjdD0dGcQuv2BIMsaA8JAhDqsVC5NGugWW7dhO3krwpOEaILdhWQvcELDJf6O2tiBBIIQTv6EFvFiVocuuZCD6XsNRNAL7WFSvpoMnYmDodXJJ3cSAxfz71KuraHWoZB1Q84nXsnMvhcFZBZCu1QyGKHhufMaZApYZD'
 var express = require('express');
 var bodyParser = require('body-parser');
 var request = require('request');
@@ -27,11 +27,16 @@ app.post('/webhook', (req, res) => {
       // Gets the body of the webhook event
       let webhook_event = entry.messaging[0];
       console.log(webhook_event);
-
       // Get the sender PSID
       let sender_psid = webhook_event.sender.id;
       console.log('Sender PSID: ' + sender_psid);
-
+      // Check if the event is a message or postback and
+      // pass the event to the appropriate handler function
+      if (webhook_event.message) {
+        handleMessage(sender_psid, webhook_event.message);
+      } else if (webhook_event.postback) {
+        handlePostback(sender_psid, webhook_event.postback);
+      }
     });
 
     // Returns a '200 OK' response to all requests
@@ -72,7 +77,26 @@ app.get('/webhook', (req, res) => {
 
 // Handles messages events
 function handleMessage(sender_psid, received_message) {
+  let response;
+  // Check if the message contains text
+  if (received_message.text) {
+    // Create the payload for a basic text message
+    response = {
+      "text": `You sent the message: "${received_message.text}". Now send me an image!`
+    }
+  }
+  // Sends the response message
+  callSendAPI(sender_psid, response);
+}
 
+function callSendAPI(sender_psid, response) {
+  // Construct the message body
+  let request_body = {
+    "recipient": {
+      "id": sender_psid
+    },
+    "message": response
+  }
 }
 
 // Handles messaging_postbacks events
