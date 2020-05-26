@@ -90,14 +90,28 @@ function handleMessage(sender_psid, received_message) {
     // Create the payload for a basic text message, which
     // will be added to the body of our request to the Send API
     response = {
-      "text": `Hi! How are you doing?`,
-      "buttons": [
-        {
-            "type": "postback",
-            "title": "Great!",
-            "payload": "great_mood",
+      "attachment": {
+        "type": "template",
+        "payload": {
+          "template_type": "generic",
+          "elements": [{
+            "title": "Hello! How are you doing?",
+            "subtitle": "Tap a button to answer.",
+            "buttons": [
+              {
+                "type": "postback",
+                "title": "Great!",
+                "payload": "great",
+              },
+              {
+                "type": "postback",
+                "title": "Good!",
+                "payload": "good",
+              }
+            ],
+          }]
         }
-      ]
+      }
     }
   } else if (received_message.attachments) {
     // Get the URL of the message attachment
