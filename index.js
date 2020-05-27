@@ -155,7 +155,7 @@ function handlePostback(sender_psid, received_postback) {
 
   // Set the response based on the postback payload
   if (payload === '<postback_payload>') {
-    response = { "text": "Hi! Let's find you some songs to fit your mood!"
+    response = { "text": "Hi! Let's find you some songs to fit your mood!",
         "buttons": [
               {
                 "type": "web_url",
