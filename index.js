@@ -159,7 +159,7 @@ function handlePostback(sender_psid, received_postback) {
       "attachment": {
         "type": "template",
         "payload": {
-          "template_type": "generic",
+          "template_type": "button",
           "elements": [{
             "title": "Hi! Let's find some songs to fit your current mood.",
             "subtitle": "Tap below to set your preferences.",
