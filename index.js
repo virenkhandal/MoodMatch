@@ -168,11 +168,6 @@ function handlePostback(sender_psid, received_postback) {
                 "type": "postback",
                 "title": "Yes!",
                 "payload": "yes",
-              },
-              {
-                "type": "postback",
-                "title": "No!",
-                "payload": "no",
               }
             ],
           }]
