@@ -165,9 +165,11 @@ function handlePostback(sender_psid, received_postback) {
             "subtitle": "Tap below to set your preferences.",
             "buttons": [
               {
-                "type": "postback",
-                "title": "Yes!",
-                "payload": "yes",
+                type: "web_url",
+                url: SERVER_URL + "/options"
+                title: "Yes!",
+                webview_height_ratio: "compact",
+                messenger_extensions: false
               }
             ],
           }]
