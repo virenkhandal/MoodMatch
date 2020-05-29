@@ -161,8 +161,8 @@ function handlePostback(sender_psid, received_postback) {
         "payload": {
           "template_type": "generic",
           "elements": [{
-            "title": "Is this the right picture?",
-            "subtitle": "Tap a button to answer.",
+            "title": "Hi! Let's find some songs to fit your current mood.",
+            "subtitle": "Tap below to set your preferences.",
             "buttons": [
               {
                 "type": "postback",
