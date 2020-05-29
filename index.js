@@ -165,11 +165,11 @@ function handlePostback(sender_psid, received_postback) {
             "subtitle": "Tap below to set your preferences.",
             "buttons": [
               {
-                type: "web_url",
-                url: SERVER_URL + "/options"
-                title: "Yes!",
-                webview_height_ratio: "compact",
-                messenger_extensions: false
+                "type": "web_url",
+                "url": SERVER_URL + "/options"
+                "title": "Yes!",
+                "webview_height_ratio": "compact",
+                "messenger_extensions": false
               }
             ],
           }]
