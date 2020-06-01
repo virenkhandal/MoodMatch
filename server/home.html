@@ -6,147 +6,42 @@
     <meta charset="UTF-8" />
     <title>Song Recommender</title>
 </head>
-<script>
-    (function (d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {
-            return;
-        }
-        js = d.createElement(s);
-        js.id = id;
-        js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'Messenger'));
-
-    window.extAsyncInit = () => {
-        // TODO: How to parse env file from here?
-        MessengerExtensions.getSupportedFeatures(function success(result) {
-            let features = result.supported_features;
-            if (features.includes("context")) {
-                MessengerExtensions.getContext('<APP_ID>',
-                    function success(thread_context) {
-                        // success
-                        document.getElementById("psid").value = thread_context.psid;
-                    },
-                    function error(err) {
-                        // error
-                        console.log(err);
-                    }
-                );
-            }
-        }, function error(err) {
-            // error retrieving supported features
-            console.log(err);
-        });
-        document.getElementById('submitButton').addEventListener('click', () => {
-            MessengerExtensions.requestCloseBrowser(function success() {
-                console.log("Webview closing");
-            }, function error(err) {
-                console.log(err);
-            });
-        });
-    };
-
-</script>
-<style>
-form{
-    display: grid;
-    grid-template-columns: 7% 43% 43% 7%;
-    grid-template-rows: 60px 100px 200px 60px 200px 200px 60px 200px 80px 60px;
-    grid-column-gap: 10px;
-	grid-row-gap: 10px;
-}
-
-#question1{
-    grid-area: 2 / 2 / 3 / 4;
-}
-
-.options1{
-    grid-area: 3 / 2 / 4 / 4;
-}
-
-#question2{
-    grid-area: 4 / 2 / 5 / 4;
-}
-
-#party{
-    grid-area: 5 / 2 / 6 / 3;
-    text-align: center;
-
-}
-
-#rainyday{
-    grid-area: 5 / 3 / 6 / 4;
-    text-align: center;
-}
-
-#study{
-    grid-area: 6 / 2 / 7 / 3;
-    text-align: center;
-}
-
-#sunset{
-    grid-area: 6 / 3 / 7 / 4;
-    text-align: center;
-}
-
-#question3{
-    grid-area: 7 / 2 / 8 / 4;
-}
-
-#submitButton{
-    grid-area: 9 / 2 / 10 / 4;
-}
-
-.img{
-    width:60%;
-    height: 80%;
-
-}
-
-.imaged{
-  position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-/* IMAGE STYLES */
-[type=radio] + img {
-  cursor: pointer;
-}
-
-/* CHECKED STYLES */
-[type=radio]:checked + img {
-  outline: 2px solid #f00;
-}
-
-</style>
 <body>
-    <form action="/optionspostback" method="get">
+    <form action="formCompleted.html" method="get">
     <input type="hidden" name="psid" id="psid">
     <h3 id="question1">How are you feeling today?</h3>
         <div class="options1">
-            <input type="radio" name="pillows" value="great">Great<br>
-            <input type="radio" name="pillows" value="meh">Ok<br>
-            <input type="radio" name="pillows" value="sad">Sad<br>
+            <input type="radio" name="mood" value="great">Great<br>
+            <input type="radio" name="mood" value="meh">Ok<br>
+            <input type="radio" name="mood" value="sad">Sad<br>
         </div>
     <h3 id="question2">Which of these images do you find the most appealing right now?</h3>
         <div id="party">
-            <input class="imaged" type="radio" name="bed" value="single"><img class="img" src="formImages/party.jpg"><br>
+            <label>
+                <input class="imaged" type="radio" name="pic" value="party"><img class="img" src="formImages/party.jpg"><br>
+            </label>
         </div>
         <div id="rainyday">
-            <input class="imaged" type="radio" name="bed" value="double"><img class="img" src="formImages/rainyday.jpg"><br>
+            <label>
+                <input class="imaged" type="radio" name="pic" value="rainyday"><img class="img" src="formImages/rainyday.jpg"><br>
+            </label>
         </div>
         <div id="study">
-            <input class="imaged" type="radio" name="bed" value="twin"><img class="img" src="formImages/study.jpg"><br>
+            <label>
+                <input class="imaged" type="radio" name="pic" value="study"><img class="img" src="formImages/study.jpg"><br>
+            </label>
         </div>
         <div id="sunset">
-            <input class="imaged" type="radio" name="bed" value="twin"><img class="img" src="formImages/sunset.jpg"><br>
+            <label>
+                <input class="imaged" type="radio" name="pic" value="sunset"><img class="img" src="formImages/sunset.jpg"><br>
+            </label>
         </div>
-    <!--<h3 id="question3">View</h3>
-        <input type="radio" name="view" value="sea">Sea<br>
-        <input type="radio" name="view" value="street">Street<br> -->
     <input type="submit" value="Submit" id="submitButton">
 </form>
 </body>
+<script>
+    var mood = document.querySelector('input[name = "mood"]:checked').value;
+    var pic = document.querySelector('input[name = "pic"]:checked').value;
+    var inputs = String(mood) + String(pic);
+</script>
+</html>

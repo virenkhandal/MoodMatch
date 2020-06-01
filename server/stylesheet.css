@@ -48,6 +48,7 @@ form{
 }
 
 .img{
+    filter: grayscale(100%);
     width:60%;
     height: 80%;
 
@@ -60,12 +61,11 @@ form{
   height: 0;
 }
 
-/* IMAGE STYLES */
-[type=radio] + img {
-  cursor: pointer;
+img:hover {
+  filter: grayscale(0);
 }
 
-/* CHECKED STYLES */
-[type=radio]:checked + img {
+input[type="radio"]:checked + img{
+  filter: grayscale(0);
   outline: 2px solid #f00;
 }
