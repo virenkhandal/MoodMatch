@@ -5,14 +5,16 @@ const
   request = require('request'),
   express = require('express'),
   body_parser = require('body-parser'),
+  path = require('path'),
   app = express().use(body_parser.json()); // creates express http server
 
 // Sets server port and logs message on success
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
 
-app.get('/', (request, response) => {
-    return response.send('Ping!');
-});
+//app.get('/', (request, response) => {
+//    return response.send('Ping!');
+//    //return response.sendFile(path.join(__dirname + '/home.html'));
+//});
 
 // Accepts POST requests at /webhook endpoint
 app.post('/webhook', (req, res) => {
@@ -163,8 +165,8 @@ function handlePostback(sender_psid, received_postback) {
             "text": "Hi! Let's find some songs to fit your current mood.",
             "buttons": [{
                 "type": "web_url",
-                "url": "https://www.google.com",
-                "title": "Yes!",
+                "url": "https://serverpage.herokuapp.com/",
+                "title": "Let's Go!",
                 "webview_height_ratio": "compact",
           }],
         }

@@ -3,5 +3,11 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/messenger-webhook" vcs="Git" />
+<<<<<<< HEAD
+=======
+    <mapping directory="$PROJECT_DIR$/messenger-webhook/formImages/musicalrecommendations" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/messenger-webhook/musicalrecommendations" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/server" vcs="Git" />
+>>>>>>> 57af840... Updated messenger-webhook to allow for navigation to html; updated html form to download data to csv
   </component>
 </project>
