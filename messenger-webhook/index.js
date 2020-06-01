@@ -163,7 +163,8 @@ function handlePostback(sender_psid, received_postback) {
             "text": "Hi! Let's find some songs to fit your current mood.",
             "buttons": [{
                 "type": "web_url",
-                "url": "https://www.google.com"
+                "url": "https://www.google.com",
+                "title": "Yes!",
                 "webview_height_ratio": "compact",
           }],
         }
