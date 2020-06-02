@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="stylesheet.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <meta charset="UTF-8" />
+    <title>Song Recommender</title>
+</head>
+<script>
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+            return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.com/en_US/messenger.Extensions.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'Messenger'));
+
+    window.extAsyncInit = () => {
+        // TODO: How to parse env file from here?
+        MessengerExtensions.getSupportedFeatures(function success(result) {
+            let features = result.supported_features;
+            if (features.includes("context")) {
+                MessengerExtensions.getContext('269253497460225',
+                    function success(thread_context) {
+                        // success
+                        document.getElementById("psid").value = thread_context.psid;
+                    },
+                    function error(err) {
+                        // error
+                        console.log(err);
+                    }
+                );
+            }
+        }, function error(err) {
+            // error retrieving supported features
+            console.log(err);
+        });
+        document.getElementById('submitButton').addEventListener('click', () => {
+            MessengerExtensions.requestCloseBrowser(function success() {
+                console.log("Webview closing");
+            }, function error(err) {
+                console.log(err);
+            });
+        });
+    };
+
+</script>
+<style>
+form{
+    display: grid;
+    grid-template-columns: 7% 43% 43% 7%;
+    grid-template-rows: 60px 100px 200px 60px 200px 200px 60px 200px 80px 60px;
+    grid-column-gap: 10px;
+	grid-row-gap: 10px;
+}
+
+#question1{
+    grid-area: 2 / 2 / 3 / 4;
+}
+
+.options1{
+    grid-area: 3 / 2 / 4 / 4;
+}
+
+#question2{
+    grid-area: 4 / 2 / 5 / 4;
+}
+
+#party{
+    grid-area: 5 / 2 / 6 / 3;
+    text-align: center;
+
+}
+
+#rainyday{
+    grid-area: 5 / 3 / 6 / 4;
+    text-align: center;
+}
+
+#study{
+    grid-area: 6 / 2 / 7 / 3;
+    text-align: center;
+}
+
+#sunset{
+    grid-area: 6 / 3 / 7 / 4;
+    text-align: center;
+}
+
+#question3{
+    grid-area: 7 / 2 / 8 / 4;
+}
+
+#submitButton{
+    grid-area: 9 / 2 / 10 / 4;
+}
+
+.img{
+    filter: grayscale(100%);
+    width:60%;
+    height: 80%;
+
+}
+
+.imaged{
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+img:hover {
+  filter: grayscale(0);
+}
+
+input[type="radio"]:checked + img{
+  filter: grayscale(0);
+  outline: 2px solid #f00;
+}
+</style>
+<body>
+<form action="/preferences" method="get">
+    <input type="hidden" name="psid" id="psid">
+    <h3 id="question1">How are you feeling today?</h3>
+        <div class="options1">
+            <input type="radio" name="mood" value="great">Great<br>
+            <input type="radio" name="mood" value="meh">Ok<br>
+            <input type="radio" name="mood" value="sad">Sad<br>
+        </div>
+    <h3 id="question2">Which of these images do you find the most appealing right now?</h3>
+        <div id="party">
+            <label>
+                <input class="imaged" type="radio" name="pic" value="party"><img class="img" src="party.jpg"><br>
+            </label>
+        </div>
+        <div id="rainyday">
+            <label>
+                <input class="imaged" type="radio" name="pic" value="rainyday"><img class="img" src="rainyday.jpg"><br>
+            </label>
+        </div>
+        <div id="study">
+            <label>
+                <input class="imaged" type="radio" name="pic" value="study"><img class="img" src="study.jpg"><br>
+            </label>
+        </div>
+        <div id="sunset">
+            <label>
+                <input class="imaged" type="radio" name="pic" value="sunset"><img class="img" src="sunset.jpg"><br>
+            </label>
+        </div>
+    <input type="submit" value="Submit" id="submitButton">
+</form>
+</body>
+<script>
+</script>
+</html>

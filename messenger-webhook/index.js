@@ -56,6 +56,30 @@ app.post('/webhook', (req, res) => {
 
 });
 
+//app.use(express.static('public'));
+
+app.get('/home', (req, res, next) => {
+    app.use(express.static('public'));
+    let referer = req.get('Referer');
+    if (referer) {
+        if (referer.indexOf('www.messenger.com') >= 0) {
+            res.setHeader('X-Frame-Options', 'ALLOW-FROM https://www.messenger.com/');
+        } else if (referer.indexOf('www.facebook.com') >= 0) {
+            res.setHeader('X-Frame-Options', 'ALLOW-FROM https://www.facebook.com/');
+        }
+        res.sendFile('home.html', {root: __dirname});
+    }
+});
+
+app.get('/preferences', (req, res) => {
+    let body = req.query;
+    response = {
+        "text": `Great, I will find you a few songs that fit your mood.`
+    };
+    res.status(200).send('Please close this window to return to the conversation thread.');
+    callSendAPI(body.psid, response);
+});
+
 // Accepts GET requests at the /webhook endpoint
 app.get('/webhook', (req, res) => {
 
@@ -165,9 +189,10 @@ function handlePostback(sender_psid, received_postback) {
             "text": "Hi! Let's find some songs to fit your current mood.",
             "buttons": [{
                 "type": "web_url",
-                "url": "https://serverpage.herokuapp.com/",
+                "url": "https://musicalrecommendations4917.herokuapp.com" + "/home",
                 "title": "Let's Go!",
                 "webview_height_ratio": "compact",
+                "messenger_extensions": true
           }],
         }
       }
