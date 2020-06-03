@@ -69,9 +69,11 @@ app.get('/home', (req, res, next) => {
         }
         res.sendFile('home.html', {root: __dirname});
     }
+    let body = req.query;
+    console.log(body.psid);
 });
 
-app.get('/preferences', (req, res) => {
+app.get('/post/', (req, res) => {
     let body = req.query;
     response = {
         "text": `Great, I will find you a few songs that fit your mood.`
@@ -181,7 +183,16 @@ function handlePostback(sender_psid, received_postback) {
 
   // Set the response based on the postback payload
   if (payload === "<postback_payload>") {
-    response = {
+    response = setPreferences(sender_psid);
+  } else if (payload === 'no') {
+    response = { "text": "Oops, try sending another image." }
+  }
+  // Send the message to acknowledge the postback
+  callSendAPI(sender_psid, response);
+}
+
+function setPreferences(sender_psid){
+    let response = {
       "attachment": {
         "type": "template",
         "payload": {
@@ -191,17 +202,13 @@ function handlePostback(sender_psid, received_postback) {
                 "type": "web_url",
                 "url": "https://musicalrecommendations4917.herokuapp.com" + "/home",
                 "title": "Let's Go!",
-                "webview_height_ratio": "compact",
+                "webview_height_ratio": "tall",
                 "messenger_extensions": true
           }],
         }
       }
-    }
-  } else if (payload === 'no') {
-    response = { "text": "Oops, try sending another image." }
-  }
-  // Send the message to acknowledge the postback
-  callSendAPI(sender_psid, response);
+    };
+    return response;
 }
 
 function callSendAPI(sender_psid, response) {
@@ -211,7 +218,7 @@ function callSendAPI(sender_psid, response) {
       "id": sender_psid
     },
     "message": response
-  }
+  };
 
   // Send the HTTP request to the Messenger Platform
   request({
