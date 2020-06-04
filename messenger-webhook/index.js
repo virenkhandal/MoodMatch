@@ -62,19 +62,22 @@ app.get('/home', (req, res, next) => {
     app.use(express.static('public'));
     let referer = req.get('Referer');
     if (referer) {
-        if (referer.indexOf('www.messenger.com') >= 0) {
-            res.setHeader('X-Frame-Options', 'ALLOW-FROM https://www.messenger.com/');
-        } else if (referer.indexOf('www.facebook.com') >= 0) {
-            res.setHeader('X-Frame-Options', 'ALLOW-FROM https://www.facebook.com/');
-        }
-        res.sendFile('home.html', {root: __dirname});
+//        if (referer.indexOf('www.messenger.com') >= 0) {
+//            res.setHeader('X-Frame-Options', 'ALLOW-FROM https://www.messenger.com/');
+//        } else if (referer.indexOf('www.facebook.com') >= 0) {
+//            res.setHeader('X-Frame-Options', 'ALLOW-FROM https://www.facebook.com/');
+//        }
+        res.sendFile('public/home.html', {root: __dirname});
     }
     let body = req.query;
     console.log(body.psid);
 });
 
-app.get('/post/', (req, res) => {
+app.get('/postback', (req, res) => {
     let body = req.query;
+    let mood = req.param('mood');
+    let psid = req.param('psid');
+    let pic = req.param('pic');
     response = {
         "text": `Great, I will find you a few songs that fit your mood.`
     };

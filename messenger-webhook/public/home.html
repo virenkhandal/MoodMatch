@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="stylesheet.css">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <!--<link rel="stylesheet" href="stylesheet.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> -->
     <meta charset="UTF-8" />
     <title>Song Recommender</title>
 </head>
@@ -16,7 +16,6 @@
     }(document, 'script', 'Messenger'));
 
     window.extAsyncInit = () => {
-        // TODO: How to parse env file from here?
         MessengerExtensions.getSupportedFeatures(function success(result) {
             let features = result.supported_features;
             if (features.includes("context")) {
@@ -38,7 +37,7 @@
 
         document.getElementById('submitButton').addEventListener('click', () => {
             MessengerExtensions.requestCloseBrowser(function success() {
-                alert("Webview closing");
+                //alert("Webview closing");
             }, function error(err) {
                 console.log(err);
             });
@@ -120,7 +119,7 @@
     }
 </style>
 <body>
-<form action="/post/" method="get">
+<form action="/postback" method="get">
     <input type="hidden" name="psid" id="psid">
     <h3 id="question1">How are you feeling today?</h3>
         <div class="options1">
