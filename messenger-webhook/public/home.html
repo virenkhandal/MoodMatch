@@ -3,6 +3,7 @@
 <head>
     <!--<link rel="stylesheet" href="stylesheet.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <meta charset="UTF-8" />
     <title>Song Recommender</title>
 </head>
@@ -91,7 +92,7 @@
         grid-area: 7 / 2 / 8 / 4;
     }
 
-    #submitButton{
+    .submit{
         grid-area: 9 / 2 / 10 / 4;
     }
 
@@ -124,7 +125,7 @@
     <h3 id="question1">How are you feeling today?</h3>
         <div class="options1">
             <input type="radio" name="mood" value="great">Great<br>
-            <input type="radio" name="mood" value="meh">Ok<br>
+            <input type="radio" name="mood" value="ok">Ok<br>
             <input type="radio" name="mood" value="sad">Sad<br>
         </div>
     <h3 id="question2">Which of these images do you find the most appealing right now?</h3>
@@ -148,9 +149,35 @@
                 <input class="imaged" type="radio" name="pic" value="sunset"><img class="img" src="sunset.jpg"><br>
             </label>
         </div>
-    <input type="submit" value="Submit" id="submitButton">
+    <input type="submit" class="submit" value="Submit" id="submitButton">
 </form>
 </body>
 <script>
+
+    function getMood(){
+        var ele = document.getElementsByName('mood');
+        for (i = 0; i < ele.length; i++){
+            if (ele[i].checked){
+                return ele[i];
+            }
+        }
+    }
+
+    function getPic(){
+        var ele = document.getElementsByName('pic');
+        for (i = 0; i < ele.length; i++){
+            if (ele[i].checked){
+                return ele[i];
+            }
+        }
+    }
+
+    $(document).ready(function(){
+        $("submitButton").click(function(){
+            $.post('https://musicalrecommendations4917.herokuapp.com/postback', 
+                {"psid": document.getElementById("psid").value, "mood":getMood().value, "pic":getPic().value}
+            );
+        });
+    });
 </script>
 </html>

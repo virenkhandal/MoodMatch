@@ -75,14 +75,18 @@ app.get('/home', (req, res, next) => {
 
 app.get('/postback', (req, res) => {
     let body = req.query;
-    let mood = req.param('mood');
-    let psid = req.param('psid');
-    let pic = req.param('pic');
-    response = {
-        "text": `Great, I will find you a few songs that fit your mood.`
-    };
-    res.status(200).send('Please close this window to return to the conversation thread.');
-    callSendAPI(body.psid, response);
+    let psid = req.query.psid;
+    console.log(body.mood);
+    console.log(body.pic);
+    if (body.mood === 'great'){
+        res = {"text": "Looks like you are already in a good mood! I will get you some songs that you can groove or dance to!"};
+    } else if (body.mood === 'ok'){
+        res = {"text": "Hmmm... looks like you are not very happy and not very sad. I will get you some songs that will help you better understand how you feel."};
+    } else {
+        res = {"text": "Aw... I'm sorry to hear that. I will get you some songs that will definitely cheer you up!"};
+    }
+
+    callSendAPI(body.psid, res);
 });
 
 // Accepts GET requests at the /webhook endpoint
@@ -115,64 +119,8 @@ app.get('/webhook', (req, res) => {
 
 function handleMessage(sender_psid, received_message) {
   let response;
-
   // Checks if the message contains text
-  if (received_message.text) {
-    // Create the payload for a basic text message, which
-    // will be added to the body of our request to the Send API
-    response = {
-      "attachment": {
-        "type": "template",
-        "payload": {
-          "template_type": "generic",
-          "elements": [{
-            "title": "Hello! How are you doing?",
-            "subtitle": "Tap a button to answer.",
-            "buttons": [
-              {
-                "type": "postback",
-                "title": "Great!",
-                "payload": "great",
-              },
-              {
-                "type": "postback",
-                "title": "Good!",
-                "payload": "good",
-              }
-            ],
-          }]
-        }
-      }
-    }
-  } else if (received_message.attachments) {
-    // Get the URL of the message attachment
-    let attachment_url = received_message.attachments[0].payload.url;
-    response = {
-      "attachment": {
-        "type": "template",
-        "payload": {
-          "template_type": "generic",
-          "elements": [{
-            "title": "Is this the right picture?",
-            "subtitle": "Tap a button to answer.",
-            "image_url": attachment_url,
-            "buttons": [
-              {
-                "type": "postback",
-                "title": "Yes!",
-                "payload": "yes",
-              },
-              {
-                "type": "postback",
-                "title": "No!",
-                "payload": "no",
-              }
-            ],
-          }]
-        }
-      }
-    }
-  }
+  response = setPreferences(sender_psid);
 
   // Send the response message
   callSendAPI(sender_psid, response);
