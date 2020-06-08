@@ -3,14 +3,5 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/messenger-webhook" vcs="Git" />
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-    <mapping directory="$PROJECT_DIR$/messenger-webhook/formImages/musicalrecommendations" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/messenger-webhook/musicalrecommendations" vcs="Git" />
-=======
->>>>>>> 2c2533e... updated form completion and moved towards js instead of php
-    <mapping directory="$PROJECT_DIR$/server" vcs="Git" />
->>>>>>> 57af840... Updated messenger-webhook to allow for navigation to html; updated html form to download data to csv
   </component>
 </project>
