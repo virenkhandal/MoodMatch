@@ -6,6 +6,9 @@ const
   express = require('express'),
   body_parser = require('body-parser'),
   path = require('path'),
+  d3 = require('d3-fetch'),
+  csv = require('csv-parser'),
+  fs = require('fs'),
   app = express().use(body_parser.json()); // creates express http server
 
 // Sets server port and logs message on success
@@ -78,6 +81,42 @@ app.get('/postback', (req, res) => {
     let psid = req.query.psid;
     console.log(body.mood);
     console.log(body.pic);
+    var mood = new String(body.mood);
+    var pic = new String(body.pic);
+    var string = mood + " " + pic;
+    (async () => {
+        var list = await sentimentAnalysis(textAnalyticsClient, string);
+        var pos = list[0];
+        var neg = list[1];
+        var ntr = list[2];
+        fs.createReadStream('analyzed.csv').pipe(csv(['Song', 'Artist', 'Pos', 'Neg', 'Ntr'])).on('data', (row) => {
+            var ratings = [row[4], row[5], row[6]];
+            var songpos = row[4];
+            var songneg = row[5];
+            var songntr = row[6];
+            var norm = math.norm(ratings, list);
+            console.log(norm);
+//        console.log(row[0]);
+//        console.log(row[1]);
+//        console.log(row[4]);
+//        console.log(row[5]);
+//        console.log(row[6]);
+    }).on('end', () => {
+        console.log('CSV file successfully processed');
+    });
+    })()
+
+
+    //var list = sentimentAnalysis(textAnalyticsClient, string);
+    console.log(list);
+
+    console.log("positive " + pos);
+    console.log("negative " + neg);
+    console.log("netural " + ntr);
+
+
+
+
     if (body.mood === 'great'){
         res = {"text": "Looks like you are already in a good mood! I will get you some songs that you can groove or dance to!"};
     } else if (body.mood === 'ok'){
@@ -86,8 +125,20 @@ app.get('/postback', (req, res) => {
         res = {"text": "Aw... I'm sorry to hear that. I will get you some songs that will definitely cheer you up!"};
     }
 
+    fs.createReadStream('analyzed.csv').pipe(csv(['Song', 'Artist', 'Pos', 'Neg', 'Ntr'])).on('data', (row) => {
+//        console.log(row[0]);
+//        console.log(row[1]);
+//        console.log(row[4]);
+//        console.log(row[5]);
+//        console.log(row[6]);
+    }).on('end', () => {
+        console.log('CSV file successfully processed');
+    });
+
     callSendAPI(body.psid, res);
 });
+
+
 
 // Accepts GET requests at the /webhook endpoint
 app.get('/webhook', (req, res) => {
@@ -185,3 +236,21 @@ function callSendAPI(sender_psid, response) {
     }
   });
 }
+
+const { TextAnalyticsClient, AzureKeyCredential } = require("@azure/ai-text-analytics");
+const key = 'eefd7a51fe184ef382bc1db79d003b69';
+const endpoint = 'https://songsentimentanalyzer.cognitiveservices.azure.com/';
+const textAnalyticsClient = new TextAnalyticsClient(endpoint,  new AzureKeyCredential(key));
+
+async function sentimentAnalysis(client, text){
+    const sentimentInput = [text];
+    const sentimentResult = await client.analyzeSentiment(sentimentInput);
+    var list = [];
+    sentimentResult.forEach(document => {
+        //console.log(`\t\tPositive: ${document.confidenceScores.positive.toFixed(2)} \tNegative: ${document.confidenceScores.negative.toFixed(2)} \tNeutral: ${document.confidenceScores.neutral.toFixed(2)}`);
+        list = [document.confidenceScores.positive.toFixed(2), document.confidenceScores.negative.toFixed(2), document.confidenceScores.neutral.toFixed(2)];
+        console.log(list);
+        return list;
+    });
+}
+
