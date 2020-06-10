@@ -9,7 +9,14 @@ const
   d3 = require('d3-fetch'),
   csv = require('csv-parser'),
   fs = require('fs'),
+  math = require('mathjs'),
+  readline = require('readline'),
   app = express().use(body_parser.json()); // creates express http server
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
 
 // Sets server port and logs message on success
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
@@ -84,38 +91,48 @@ app.get('/postback', (req, res) => {
     var mood = new String(body.mood);
     var pic = new String(body.pic);
     var string = mood + " " + pic;
-    (async () => {
-        var list = await sentimentAnalysis(textAnalyticsClient, string);
-        var pos = list[0];
-        var neg = list[1];
-        var ntr = list[2];
+    let list = [];
+    const func = async() => {
+        list = await sentimentAnalysis(textAnalyticsClient, string);
+        console.log("List: " + list);
+        var norms = {};
         fs.createReadStream('analyzed.csv').pipe(csv(['Song', 'Artist', 'Pos', 'Neg', 'Ntr'])).on('data', (row) => {
+            var song = row[0];
             var ratings = [row[4], row[5], row[6]];
             var songpos = row[4];
             var songneg = row[5];
             var songntr = row[6];
-            var norm = math.norm(ratings, list);
-            console.log(norm);
-//        console.log(row[0]);
-//        console.log(row[1]);
-//        console.log(row[4]);
-//        console.log(row[5]);
-//        console.log(row[6]);
-    }).on('end', () => {
-        console.log('CSV file successfully processed');
-    });
-    })()
-
-
-    //var list = sentimentAnalysis(textAnalyticsClient, string);
-    console.log(list);
-
-    console.log("positive " + pos);
-    console.log("negative " + neg);
-    console.log("netural " + ntr);
-
-
-
+            var listpos = list[0];
+            var listneg = list[1];
+            var listntr = list[2];
+            var dx = listpos - songpos;
+            var dy = listneg - songneg;
+            var dz = listntr - songntr;
+            var norm = Math.sqrt((dx * dx) + (dy * dy) + (dz * dz));
+            //console.log(norm);
+            //var norm = math.norm(ratings, list);
+            norms[song] = norm;
+            //console.log(norm);
+        }).on('end', () => {
+            var min = 100000;
+            var closest;
+            for (var key in norms){
+                //console.log(key);
+                if (norms[key] < min){
+                    min = norms[key];
+                    closest = key;
+                }
+            }
+            console.log(closest);
+            fs.createReadStream('analyzed.csv').pipe(csv(['Song', 'Artist', 'Pos', 'Neg', 'Ntr'])).on('data', (row) => {
+            if (row[0] === closest){
+                res = {"text": `Here is a song you should definitely listen to right now: ${row[0]} by ${row[1]}.`};
+                callSendAPI(body.psid, res);
+            }
+            });
+        });
+    }
+    func();
 
     if (body.mood === 'great'){
         res = {"text": "Looks like you are already in a good mood! I will get you some songs that you can groove or dance to!"};
@@ -125,19 +142,12 @@ app.get('/postback', (req, res) => {
         res = {"text": "Aw... I'm sorry to hear that. I will get you some songs that will definitely cheer you up!"};
     }
 
-    fs.createReadStream('analyzed.csv').pipe(csv(['Song', 'Artist', 'Pos', 'Neg', 'Ntr'])).on('data', (row) => {
-//        console.log(row[0]);
-//        console.log(row[1]);
-//        console.log(row[4]);
-//        console.log(row[5]);
-//        console.log(row[6]);
-    }).on('end', () => {
-        console.log('CSV file successfully processed');
-    });
-
     callSendAPI(body.psid, res);
 });
 
+app.get('/recommend', (req, res) => {
+
+});
 
 
 // Accepts GET requests at the /webhook endpoint
@@ -247,10 +257,9 @@ async function sentimentAnalysis(client, text){
     const sentimentResult = await client.analyzeSentiment(sentimentInput);
     var list = [];
     sentimentResult.forEach(document => {
-        //console.log(`\t\tPositive: ${document.confidenceScores.positive.toFixed(2)} \tNegative: ${document.confidenceScores.negative.toFixed(2)} \tNeutral: ${document.confidenceScores.neutral.toFixed(2)}`);
+        console.log(`\t\tPositive: ${document.confidenceScores.positive.toFixed(2)} \tNegative: ${document.confidenceScores.negative.toFixed(2)} \tNeutral: ${document.confidenceScores.neutral.toFixed(2)}`);
         list = [document.confidenceScores.positive.toFixed(2), document.confidenceScores.negative.toFixed(2), document.confidenceScores.neutral.toFixed(2)];
-        console.log(list);
-        return list;
     });
+    return list;
 }
 
