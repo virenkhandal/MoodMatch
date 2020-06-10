@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!--<link rel="stylesheet" href="stylesheet.css">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <meta charset="UTF-8" />
     <title>Song Recommender</title>
@@ -49,10 +47,12 @@
 <style>
     form{
         display: grid;
+        background: #FCDED8;
         grid-template-columns: 7% 43% 43% 7%;
         grid-template-rows: 60px 100px 200px 60px 200px 200px 60px 200px 80px 60px;
         grid-column-gap: 10px;
     	grid-row-gap: 10px;
+    	font-family: "optima";
     }
 
     #question1{
@@ -100,7 +100,7 @@
         filter: grayscale(100%);
         width:60%;
         height: 80%;
-
+        transition: transform .7s;
     }
 
     .imaged{
@@ -112,6 +112,7 @@
 
     img:hover {
       filter: grayscale(0);
+      transform: scale(1.3);
     }
 
     input[type="radio"]:checked + img{
@@ -124,36 +125,35 @@
     <input type="hidden" name="psid" id="psid">
     <h3 id="question1">How are you feeling today?</h3>
         <div class="options1">
-            <input type="radio" name="mood" value="great">Great<br>
-            <input type="radio" name="mood" value="ok">Ok<br>
-            <input type="radio" name="mood" value="sad">Sad<br>
+            <input type="radio" name="mood" value="great" required>Great<br>
+            <input type="radio" name="mood" value="ok" required>Ok<br>
+            <input type="radio" name="mood" value="sad" required>Sad<br>
         </div>
     <h3 id="question2">Which of these images do you find the most appealing right now?</h3>
         <div id="party">
             <label>
-                <input class="imaged" type="radio" name="pic" value="party"><img class="img" src="party.jpg"><br>
+                <input class="imaged" type="radio" name="pic" value="party" required><img class="img" src="party.jpg"><br>
             </label>
         </div>
         <div id="rainyday">
             <label>
-                <input class="imaged" type="radio" name="pic" value="rainyday"><img class="img" src="rainyday.jpg"><br>
+                <input class="imaged" type="radio" name="pic" value="rainyday" required><img class="img" src="rainyday.jpg"><br>
             </label>
         </div>
         <div id="study">
             <label>
-                <input class="imaged" type="radio" name="pic" value="study"><img class="img" src="study.jpg"><br>
+                <input class="imaged" type="radio" name="pic" value="study" required><img class="img" src="study.jpg"><br>
             </label>
         </div>
         <div id="sunset">
             <label>
-                <input class="imaged" type="radio" name="pic" value="sunset"><img class="img" src="sunset.jpg"><br>
+                <input class="imaged" type="radio" name="pic" value="sunset" required><img class="img" src="sunset.jpg"><br>
             </label>
         </div>
     <input type="submit" class="submit" value="Submit" id="submitButton">
 </form>
 </body>
 <script>
-
     function getMood(){
         var ele = document.getElementsByName('mood');
         for (i = 0; i < ele.length; i++){
