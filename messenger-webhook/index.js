@@ -13,10 +13,46 @@ const
   readline = require('readline'),
   app = express().use(body_parser.json()); // creates express http server
 
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
+var Spotify = require('node-spotify-api');
+var spotify = new Spotify({
+  id: '8514e6dbe2114a3e942dc012eb11f882',
+  secret: 'd14b2aba57224628a15edc4c6fc47cd5'
 });
+
+var client_id = '8514e6dbe2114a3e942dc012eb11f882';
+var client_secret = 'd14b2aba57224628a15edc4c6fc47cd5';
+var token = 'BQBXJmPMngc2VfaYDi-HDd7KMaxeOx4G0gnueFaKemk_b4xvM9xNt76TY3v9rGyVOVdT3aUsz98xoYvK_Zc';
+
+var authOptions = {
+  url: 'https://accounts.spotify.com/api/token',
+  headers: {
+    'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
+  },
+  form: {
+    grant_type: 'client_credentials'
+  },
+  json: true
+};
+
+//request.post(authOptions, function(error, response, body) {
+//  if (!error && response.statusCode === 200) {
+//
+//    // use the access token to access the Spotify Web API
+//    token = body.access_token;
+//    var options = {
+//      url: 'https://api.spotify.com/v1/users/virenkhandal',
+//      headers: {
+//        'Authorization': 'Bearer ' + token
+//      },
+//      json: true
+//    };
+//    request.get(options, function(error, response, body) {
+//      //console.log(body);
+//      //console.log(token);
+//    });
+//  }
+//});
+
 
 // Sets server port and logs message on success
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
@@ -97,17 +133,10 @@ app.get('/postback', (req, res) => {
         console.log("List: " + list);
         var norms = {};
         fs.createReadStream('analyzed.csv').pipe(csv(['Song', 'Artist', 'Pos', 'Neg', 'Ntr'])).on('data', (row) => {
-            var song = row[0];
-            var ratings = [row[4], row[5], row[6]];
-            var songpos = row[4];
-            var songneg = row[5];
-            var songntr = row[6];
-            var listpos = list[0];
-            var listneg = list[1];
-            var listntr = list[2];
-            var dx = listpos - songpos;
-            var dy = listneg - songneg;
-            var dz = listntr - songntr;
+            var song = row[0]; var ratings = [row[4], row[5], row[6]];
+            var songpos = row[4]; var songneg = row[5]; var songntr = row[6];
+            var listpos = list[0]; var listneg = list[1]; var listntr = list[2];
+            var dx = listpos - songpos; var dy = listneg - songneg; var dz = listntr - songntr;
             var norm = Math.sqrt((dx * dx) + (dy * dy) + (dz * dz));
             //console.log(norm);
             //var norm = math.norm(ratings, list);
@@ -115,7 +144,7 @@ app.get('/postback', (req, res) => {
             //console.log(norm);
         }).on('end', () => {
             var min = 100000;
-            var closest;
+            var closest; var second; var third; var fourth; var fifth;
             for (var key in norms){
                 //console.log(key);
                 if (norms[key] < min){
@@ -123,31 +152,104 @@ app.get('/postback', (req, res) => {
                     closest = key;
                 }
             }
-            console.log(closest);
-            fs.createReadStream('analyzed.csv').pipe(csv(['Song', 'Artist', 'Pos', 'Neg', 'Ntr'])).on('data', (row) => {
-            if (row[0] === closest){
-                res = {"text": `Here is a song you should definitely listen to right now: ${row[0]} by ${row[1]}.`};
-                callSendAPI(body.psid, res);
+            min = 100000;
+            for (var key in norms){
+                if (norms[key] < min && key!= closest){
+                    min = norms[key];
+                    second = key;
+                }
             }
+            min = 100000;
+            for (var key in norms){
+                if (norms[key] < min && key!= closest && key != second){
+                    min = norms[key];
+                    third = key;
+                }
+            }
+            min = 100000;
+            for (var key in norms){
+                if (norms[key] < min && key!= closest && key != second && key != third){
+                    min = norms[key];
+                    fourth = key;
+                }
+            }
+            min = 100000;
+            for (var key in norms){
+                if (norms[key] < min && key!= closest && key != second && key != third && key != fourth){
+                    min = norms[key];
+                    fifth = key;
+                }
+            }
+            var topfive = [closest, second, third, fourth, fifth]; console.log(topfive);
+            fs.createReadStream('analyzed.csv').pipe(csv(['Song', 'Artist', 'Pos', 'Neg', 'Ntr'])).on('data', (row) => {
+                for (var item in topfive){
+                    var href = "";
+                    if (row[0] === closest){
+                        spotify.search({type:'track', query:`${row[0]} ${row[1]}`, limit:3}, function(err, data){
+                            if (err){
+                                console.log("Error occured: "+err);
+                            }
+                            href = data.tracks.items[0].href +"?market=US";
+                            var options = {
+                              url: href,
+                              headers: {
+                                'Authorization': 'Bearer ' + token
+                              },
+                              json: true
+                            };
+                            console.log(token);
+                            request.get(options, function(error, response, body){
+                                //console.log(data.tracks.items[0]);
+                                //var preview = data.tracks.items[0].preview_url;
+                                console.log(body.album.images[0].url);
+                                var image = body.album.images[0].url;
+
+//                                if (preview != null | preview != ""){
+//                                    res = {"text": `Here is a song you should definitely listen to right now: ${preview}.`};
+//                                    callSendAPI(body.psid, res);
+//                                }
+                            });
+                        })
+                    }
+                }
+                //res = {"text": `Here is a song you should definitely listen to right now: ${href}.`};
+                //res = sendSpotify(body.psid, href);
+                //callSendAPI(body.psid, res);
+            })
             });
-        });
-    }
+        };
     func();
 
-    if (body.mood === 'great'){
-        res = {"text": "Looks like you are already in a good mood! I will get you some songs that you can groove or dance to!"};
-    } else if (body.mood === 'ok'){
-        res = {"text": "Hmmm... looks like you are not very happy and not very sad. I will get you some songs that will help you better understand how you feel."};
-    } else {
-        res = {"text": "Aw... I'm sorry to hear that. I will get you some songs that will definitely cheer you up!"};
-    }
+//    if (body.mood === 'great'){
+//        res = {"text": "Looks like you are already in a good mood! I will get you some songs that you can groove or dance to!"};
+//    } else if (body.mood === 'ok'){
+//        res = {"text": "Hmmm... looks like you are not very happy and not very sad. I will get you some songs that will help you better understand how you feel."};
+//    } else {
+//        res = {"text": "Aw... I'm sorry to hear that. I will get you some songs that will definitely cheer you up!"};
+//    }
 
     callSendAPI(body.psid, res);
 });
 
-app.get('/recommend', (req, res) => {
-
-});
+function sendSpotify(sender_psid, url){
+    let response = {
+      "attachment": {
+        "type": "template",
+        "payload": {
+          "template_type": "button",
+            "text": "Here's a song you should definitely listen to right now!",
+            "buttons": [{
+                "type": "web_url",
+                "url": url,
+                "title": "Let's Go!",
+                "webview_height_ratio": "tall",
+                "messenger_extensions": true
+          }],
+        }
+      }
+    };
+    return response;
+}
 
 
 // Accepts GET requests at the /webhook endpoint
