@@ -128,6 +128,14 @@ app.get('/postback', (req, res) => {
     var pic = new String(body.pic);
     var string = mood + " " + pic;
     let list = [];
+    if (body.mood === 'great'){
+        res = {"text": "Looks like you are already in a good mood! I will get you some songs that you can groove or dance to!"};
+    } else if (body.mood === 'ok'){
+        res = {"text": "Hmmm... looks like you are not very happy and not very sad. I will get you some songs that will help you better understand how you feel."};
+    } else {
+        res = {"text": "Aw... I'm sorry to hear that. I will get you some songs that will definitely cheer you up!"};
+    }
+    callSendAPI(body.psid, res);
     const func = async() => {
         list = await sentimentAnalysis(textAnalyticsClient, string);
         console.log("List: " + list);
@@ -180,55 +188,33 @@ app.get('/postback', (req, res) => {
                     fifth = key;
                 }
             }
-            var topfive = [closest, second, third, fourth, fifth]; console.log(topfive);
+            var topfive = [closest, second, fourth]; console.log(topfive);
+            let boo = {"text": `Here are a couple of songs you should definitely listen to right now:`};
+            callSendAPI(body.psid, boo);
             fs.createReadStream('analyzed.csv').pipe(csv(['Song', 'Artist', 'Pos', 'Neg', 'Ntr'])).on('data', (row) => {
+                var outputs = [];
+                var names = [];
                 for (var item in topfive){
-                    var href = "";
-                    if (row[0] === closest){
-                        spotify.search({type:'track', query:`${row[0]} ${row[1]}`, limit:3}, function(err, data){
+                    if (row[0] === topfive[item] && !names.includes(row[0])){
+                        names.push(row[0]);
+                        spotify.search({type:'track', query:`${row[0]} ${row[1]}`, limit:1}, function(err, data){
                             if (err){
                                 console.log("Error occured: "+err);
                             }
-                            href = data.tracks.items[0].href +"?market=US";
-                            var options = {
-                              url: href,
-                              headers: {
-                                'Authorization': 'Bearer ' + token
-                              },
-                              json: true
-                            };
-                            console.log(token);
-                            request.get(options, function(error, response, body){
-                                //console.log(data.tracks.items[0]);
-                                //var preview = data.tracks.items[0].preview_url;
-                                console.log(body.album.images[0].url);
-                                var image = body.album.images[0].url;
-
-//                                if (preview != null | preview != ""){
-//                                    res = {"text": `Here is a song you should definitely listen to right now: ${preview}.`};
-//                                    callSendAPI(body.psid, res);
-//                                }
-                            });
+                            var href = data.tracks.items[0].external_urls.spotify;
+                            //console.log(href);
+                            if (!outputs.includes(href)){
+                                outputs.push(href);
+                                let songreply = {"text": `${row[0]} by ${row[1]}. Find it on Spotify at ${href}.`};
+                                callSendAPI(body.psid, songreply);
+                            }
                         })
                     }
                 }
-                //res = {"text": `Here is a song you should definitely listen to right now: ${href}.`};
-                //res = sendSpotify(body.psid, href);
-                //callSendAPI(body.psid, res);
             })
             });
         };
     func();
-
-//    if (body.mood === 'great'){
-//        res = {"text": "Looks like you are already in a good mood! I will get you some songs that you can groove or dance to!"};
-//    } else if (body.mood === 'ok'){
-//        res = {"text": "Hmmm... looks like you are not very happy and not very sad. I will get you some songs that will help you better understand how you feel."};
-//    } else {
-//        res = {"text": "Aw... I'm sorry to hear that. I will get you some songs that will definitely cheer you up!"};
-//    }
-
-    callSendAPI(body.psid, res);
 });
 
 function sendSpotify(sender_psid, url){
