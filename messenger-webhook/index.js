@@ -18,11 +18,10 @@ var spotify = new Spotify({
   id: '8514e6dbe2114a3e942dc012eb11f882',
   secret: 'd14b2aba57224628a15edc4c6fc47cd5'
 });
-
+var string;
 var client_id = '8514e6dbe2114a3e942dc012eb11f882';
 var client_secret = 'd14b2aba57224628a15edc4c6fc47cd5';
 var token = 'BQBXJmPMngc2VfaYDi-HDd7KMaxeOx4G0gnueFaKemk_b4xvM9xNt76TY3v9rGyVOVdT3aUsz98xoYvK_Zc';
-
 var authOptions = {
   url: 'https://accounts.spotify.com/api/token',
   headers: {
@@ -34,33 +33,8 @@ var authOptions = {
   json: true
 };
 
-//request.post(authOptions, function(error, response, body) {
-//  if (!error && response.statusCode === 200) {
-//
-//    // use the access token to access the Spotify Web API
-//    token = body.access_token;
-//    var options = {
-//      url: 'https://api.spotify.com/v1/users/virenkhandal',
-//      headers: {
-//        'Authorization': 'Bearer ' + token
-//      },
-//      json: true
-//    };
-//    request.get(options, function(error, response, body) {
-//      //console.log(body);
-//      //console.log(token);
-//    });
-//  }
-//});
-
-
 // Sets server port and logs message on success
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
-
-//app.get('/', (request, response) => {
-//    return response.send('Ping!');
-//    //return response.sendFile(path.join(__dirname + '/home.html'));
-//});
 
 // Accepts POST requests at /webhook endpoint
 app.post('/webhook', (req, res) => {
@@ -102,40 +76,55 @@ app.post('/webhook', (req, res) => {
 
 });
 
-//app.use(express.static('public'));
+// Accepts GET requests at the /webhook endpoint
+app.get('/webhook', (req, res) => {
 
-app.get('/home', (req, res, next) => {
-    app.use(express.static('public'));
-    let referer = req.get('Referer');
-    if (referer) {
-//        if (referer.indexOf('www.messenger.com') >= 0) {
-//            res.setHeader('X-Frame-Options', 'ALLOW-FROM https://www.messenger.com/');
-//        } else if (referer.indexOf('www.facebook.com') >= 0) {
-//            res.setHeader('X-Frame-Options', 'ALLOW-FROM https://www.facebook.com/');
-//        }
-        res.sendFile('public/home.html', {root: __dirname});
+  /** UPDATE YOUR VERIFY TOKEN **/
+  const VERIFY_TOKEN = "customToken";
+
+  // Parse params from the webhook verification request
+  let mode = req.query['hub.mode'];
+  let token = req.query['hub.verify_token'];
+  let challenge = req.query['hub.challenge'];
+
+  // Check if a token and mode were sent
+  if (mode && token) {
+
+    // Check the mode and token sent are correct
+    if (mode === 'subscribe' && token === VERIFY_TOKEN) {
+
+      // Respond with 200 OK and challenge token from the request
+      console.log('WEBHOOK_VERIFIED');
+      res.status(200).send(challenge);
+
+    } else {
+      // Responds with '403 Forbidden' if verify tokens do not match
+      res.sendStatus(403);
     }
-    let body = req.query;
-    console.log(body.psid);
+  }
 });
 
-app.get('/postback', (req, res) => {
-    let body = req.query;
-    let psid = req.query.psid;
-    console.log(body.mood);
-    console.log(body.pic);
-    var mood = new String(body.mood);
-    var pic = new String(body.pic);
-    var string = mood + " " + pic;
+// Handles messages (received_message) from sender (sender_psid) and responds accordingly
+function handleMessage(sender_psid, received_message) {
+  let response;
+  // Checks if the message contains text
+  console.log(received_message.text);
+  if (received_message.text === 'Great'){
+    string = received_message.text;
+    response = sendImages('great');
+  } else if (received_message.text === 'Ok'){
+    string = received_message.text;
+    response = sendImages('ok');
+  } else if (received_message.text === 'Sad'){
+    string = received_message.text;
+    response = sendImages('sad');
+  } else if (received_message.text === 'Partying' | received_message.text === 'Dancing Alone' | received_message.text === 'Love'
+             | received_message.text === 'Studying' | received_message.text === 'Sunset' | received_message.text === 'Flowers'
+              | received_message.text === 'Rainy Day' | received_message.text === 'Heartbreak' | received_message.text === 'Thinking'){
+    string = string + " " + received_message.text;
+    let boo = {"text": `Here are a couple of songs you should definitely listen to right now:`};
+    callSendAPI(sender_psid, boo);
     let list = [];
-    if (body.mood === 'great'){
-        res = {"text": "Looks like you are already in a good mood! I will get you some songs that you can groove or dance to!"};
-    } else if (body.mood === 'ok'){
-        res = {"text": "Hmmm... looks like you are not very happy and not very sad. I will get you some songs that will help you better understand how you feel."};
-    } else {
-        res = {"text": "Aw... I'm sorry to hear that. I will get you some songs that will definitely cheer you up!"};
-    }
-    callSendAPI(body.psid, res);
     const func = async() => {
         list = await sentimentAnalysis(textAnalyticsClient, string);
         console.log("List: " + list);
@@ -189,8 +178,6 @@ app.get('/postback', (req, res) => {
                 }
             }
             var topfive = [closest, second, fourth]; console.log(topfive);
-            let boo = {"text": `Here are a couple of songs you should definitely listen to right now:`};
-            callSendAPI(body.psid, boo);
             fs.createReadStream('analyzed.csv').pipe(csv(['Song', 'Artist', 'Pos', 'Neg', 'Ntr'])).on('data', (row) => {
                 var outputs = [];
                 var names = [];
@@ -206,7 +193,7 @@ app.get('/postback', (req, res) => {
                             if (!outputs.includes(href)){
                                 outputs.push(href);
                                 let songreply = {"text": `${row[0]} by ${row[1]}. Find it on Spotify at ${href}.`};
-                                callSendAPI(body.psid, songreply);
+                                callSendAPI(sender_psid, songreply);
                             }
                         })
                     }
@@ -215,102 +202,127 @@ app.get('/postback', (req, res) => {
             });
         };
     func();
-});
-
-function sendSpotify(sender_psid, url){
-    let response = {
-      "attachment": {
-        "type": "template",
-        "payload": {
-          "template_type": "button",
-            "text": "Here's a song you should definitely listen to right now!",
-            "buttons": [{
-                "type": "web_url",
-                "url": url,
-                "title": "Let's Go!",
-                "webview_height_ratio": "tall",
-                "messenger_extensions": true
-          }],
-        }
-      }
-    };
-    return response;
-}
-
-
-// Accepts GET requests at the /webhook endpoint
-app.get('/webhook', (req, res) => {
-
-  /** UPDATE YOUR VERIFY TOKEN **/
-  const VERIFY_TOKEN = "customToken";
-
-  // Parse params from the webhook verification request
-  let mode = req.query['hub.mode'];
-  let token = req.query['hub.verify_token'];
-  let challenge = req.query['hub.challenge'];
-
-  // Check if a token and mode were sent
-  if (mode && token) {
-
-    // Check the mode and token sent are correct
-    if (mode === 'subscribe' && token === VERIFY_TOKEN) {
-
-      // Respond with 200 OK and challenge token from the request
-      console.log('WEBHOOK_VERIFIED');
-      res.status(200).send(challenge);
-
-    } else {
-      // Responds with '403 Forbidden' if verify tokens do not match
-      res.sendStatus(403);
-    }
+  } else {
+    response = setPreferences(sender_psid);
   }
-});
-
-function handleMessage(sender_psid, received_message) {
-  let response;
-  // Checks if the message contains text
-  response = setPreferences(sender_psid);
-
   // Send the response message
   callSendAPI(sender_psid, response);
 }
 
+// Handles basic postback requests (mainly for Get Started)
 function handlePostback(sender_psid, received_postback) {
-  console.log('ok')
-   let response;
+  let response;
   // Get the payload for the postback
   let payload = received_postback.payload;
-
+  console.log(payload);
   // Set the response based on the postback payload
-  if (payload === "<postback_payload>") {
+  if (payload === "<postback_payload>"){
     response = setPreferences(sender_psid);
-  } else if (payload === 'no') {
-    response = { "text": "Oops, try sending another image." }
   }
   // Send the message to acknowledge the postback
   callSendAPI(sender_psid, response);
 }
 
+// Sends second question of preferences based on previous answer to mood
+function sendImages(mood){
+    let response;
+    if (mood === "great"){
+        response = {
+        "text": "Looks like you are already in a good mood! Choose which picture appeals to you the most right now so we can get you the perfect song!",
+        "quick_replies":[
+                {
+                    "content_type":"text",
+                    "title":"Partying",
+                    "payload":"great",
+                    "image_url":"https://blogmedia.evbstatic.com/wp-content/uploads/wpmulti/sites/8/shutterstock_199419065.jpg"
+                },{
+                    "content_type":"text",
+                    "title":"Dancing Alone",
+                    "payload":"ok",
+                    "image_url":"https://1000awesomethings.com/wp-content/uploads/2010/04/dancing-home-alone.jpg"
+                },{
+                    "content_type":"text",
+                    "title":"Love",
+                    "payload":"sad",
+                    "image_url":"https://cdn.pixabay.com/photo/2018/01/04/19/43/love-3061483__340.jpg"
+                }
+            ]
+        };
+    } else if (mood === "ok"){
+        response = {
+        "text": "Hmmm... ok. Choose a picture below so we can better understand what kind of songs will fit your current mood!",
+        "quick_replies":[
+                {
+                    "content_type":"text",
+                    "title":"Studying",
+                    "payload":"great",
+                    "image_url":"https://www.fastweb.com/uploads/article_photo/photo/2161/crop380w_istock_000002193842xsmall-books.jpg"
+                },{
+                    "content_type":"text",
+                    "title":"Sunset",
+                    "payload":"ok",
+                    "image_url":"https://images.unsplash.com/photo-1503803548695-c2a7b4a5b875?ixlib=rb-1.2.1&w=1000&q=80"
+                },{
+                    "content_type":"text",
+                    "title":"Flowers",
+                    "payload":"sad",
+                    "image_url":"https://images.unsplash.com/photo-1533907650686-70576141c030?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80"
+                }
+            ]
+        };
+    } else {
+        response = {
+        "text": "Aww... I'm sorry to hear that. Choose an image below so we can find the perfect song to cheer you up!",
+        "quick_replies":[
+                {
+                    "content_type":"text",
+                    "title":"Rainy Day",
+                    "payload":"great",
+                    "image_url":"https://www.downtownludington.org/wp-content/uploads/2016/07/11050673_10206656239231004_2731477320981205814_n.jpg"
+                },{
+                    "content_type":"text",
+                    "title":"Heartbreak",
+                    "payload":"ok",
+                    "image_url":"https://happynotperfect.com/modules/ybc_blog/views/img/post/B35%20-%20Heartbreak,%20why%20is%20it%20so%20painful.jpg"
+                },{
+                    "content_type":"text",
+                    "title":"Thinking",
+                    "payload":"sad",
+                    "image_url":"https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQhj_GLvREqSYxwQusUSYaHLP9zvt7J5GgXCJ8OB-I5DEItzqNL&usqp=CAU"
+                }
+            ]
+        };
+    }
+    return response;
+}
+
+// Sends first question of preferences to check user's mood
 function setPreferences(sender_psid){
     let response = {
-      "attachment": {
-        "type": "template",
-        "payload": {
-          "template_type": "button",
-            "text": "Hi! Let's find some songs to fit your current mood.",
-            "buttons": [{
-                "type": "web_url",
-                "url": "https://musicalrecommendations4917.herokuapp.com" + "/home",
-                "title": "Let's Go!",
-                "webview_height_ratio": "tall",
-                "messenger_extensions": true
-          }],
-        }
-      }
+        "text": "Hi! Let's find some songs to fit your current mood. How are you feeling today?",
+        "quick_replies":[
+                {
+                    "content_type":"text",
+                    "title":"Great",
+                    "payload":"great",
+                    "image_url":"https://cdn.shopify.com/s/files/1/1061/1924/products/Smiling_Face_Emoji_grande.png?v=1571606036"
+                },{
+                    "content_type":"text",
+                    "title":"Ok",
+                    "payload":"ok",
+                    "image_url":"https://hotemoji.com/images/dl/r/straight-face-emoji-by-twitter.png"
+                },{
+                    "content_type":"text",
+                    "title":"Sad",
+                    "payload":"sad",
+                    "image_url":"https://i.pinimg.com/originals/3e/90/e8/3e90e8bfe2328d42174d3c3743977cdf.png"
+                }
+        ]
     };
     return response;
 }
 
+// Performs all message sending to sender_psid
 function callSendAPI(sender_psid, response) {
   // Construct the message body
   let request_body = {
@@ -340,6 +352,7 @@ const key = 'eefd7a51fe184ef382bc1db79d003b69';
 const endpoint = 'https://songsentimentanalyzer.cognitiveservices.azure.com/';
 const textAnalyticsClient = new TextAnalyticsClient(endpoint,  new AzureKeyCredential(key));
 
+// Performs all sentimental analysis on user's inputs
 async function sentimentAnalysis(client, text){
     const sentimentInput = [text];
     const sentimentResult = await client.analyzeSentiment(sentimentInput);
