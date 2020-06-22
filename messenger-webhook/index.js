@@ -228,7 +228,7 @@ function sendImages(mood){
     let response;
     if (mood === "great"){
         response = {
-        "text": "Looks like you are already in a good mood! Choose which picture appeals to you the most right now so we can get you the perfect song!",
+        "text": "Looks like you are already in a good mood! Choose which concept/picture appeals to you the most right now so we can get you the perfect song!",
         "quick_replies":[
                 {
                     "content_type":"text",
@@ -250,7 +250,7 @@ function sendImages(mood){
         };
     } else if (mood === "ok"){
         response = {
-        "text": "Hmmm... ok. Choose a picture below so we can better understand what kind of songs will fit your current mood!",
+        "text": "Hmmm... ok. Choose a concept/picture below so we can better understand what kind of songs will fit your current mood!",
         "quick_replies":[
                 {
                     "content_type":"text",
@@ -272,7 +272,7 @@ function sendImages(mood){
         };
     } else {
         response = {
-        "text": "Aww... I'm sorry to hear that. Choose an image below so we can find the perfect song to cheer you up!",
+        "text": "Aww... I'm sorry to hear that. Choose a concept/image below so we can find the perfect song to cheer you up!",
         "quick_replies":[
                 {
                     "content_type":"text",
