@@ -2,7 +2,11 @@ import csv
 import lyricsgenius
 from cleandata import run, removeBlanks
 from analyzelyrics import runAnalysis
+from analyzeoverview import runOverview
 from visualize import visualize
+from tmdbv3api import TMDb
+from tmdbv3api import Movie
+
 
 # Spotify files
 spotify = "Mining/SongRecommender/Spotify/updatedspotify.csv"
@@ -34,7 +38,9 @@ importnewdata = False
 cleandata = False
 blanks = False
 analyzeLyrics = False
-plotting = True
+plotting = False
+findingGenre = False
+analyzeOverview = True
 
 def writeLyrics(csvFiletoRead, csvFiletoWrite):
     openCSVtoRead = open(csvFiletoRead, 'r')
@@ -54,6 +60,19 @@ def writeLyrics(csvFiletoRead, csvFiletoWrite):
             writer.writerow([row[0], row[1], song.lyrics])
     openCSVtoWrite.close()
     openCSVtoRead.close()
+
+tmdb = TMDb()
+tmdb.api_key = '6059876de4b1032e753411e483b2f7d9'
+movie = Movie()
+popular = movie.popular()
+
+def findGenre(csvFiletoWrite):
+    # openCSVtoRead = open(csvFiletoRead, 'r')
+    # reader = csv.reader(openCSVtoRead)
+    openCSVtoWrite = open(csvFiletoWrite, 'w')
+    writer = csv.writer(openCSVtoWrite)
+    for p in popular:
+        writer.writerow([p.title, p.overview])
 
 
 if __name__ == "__main__":
@@ -77,3 +96,7 @@ if __name__ == "__main__":
         runAnalysis()
     if plotting:
         visualize()
+    if findingGenre:
+        findGenre("Mining/MovieRecommender/TMDBOverview.csv")
+    if analyzeOverview:
+        runOverview()

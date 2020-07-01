@@ -19,6 +19,7 @@ var spotify = new Spotify({
   secret: 'd14b2aba57224628a15edc4c6fc47cd5'
 });
 var string;
+var category;
 var client_id = '8514e6dbe2114a3e942dc012eb11f882';
 var client_secret = 'd14b2aba57224628a15edc4c6fc47cd5';
 var token = 'BQBXJmPMngc2VfaYDi-HDd7KMaxeOx4G0gnueFaKemk_b4xvM9xNt76TY3v9rGyVOVdT3aUsz98xoYvK_Zc';
@@ -109,7 +110,13 @@ function handleMessage(sender_psid, received_message) {
   let response;
   // Checks if the message contains text
   console.log(received_message.text);
-  if (received_message.text === 'Great'){
+  if (received_message.text === 'Watch a movie'){
+    category = "movie";
+    response = setPreferences(sender_psid);
+  } else if (received_message.text === 'Listen to music'){
+    category = "music";
+    response = setPreferences(sender_psid);
+  } else if (received_message.text === 'Great'){
     string = received_message.text;
     response = sendImages('great');
   } else if (received_message.text === 'Ok'){
@@ -122,88 +129,169 @@ function handleMessage(sender_psid, received_message) {
              | received_message.text === 'Studying' | received_message.text === 'Sunset' | received_message.text === 'Flowers'
               | received_message.text === 'Rainy Day' | received_message.text === 'Heartbreak' | received_message.text === 'Thinking'){
     string = string + " " + received_message.text;
-    let boo = {"text": `Here are a couple of songs you should definitely listen to right now:`};
-    callSendAPI(sender_psid, boo);
     let list = [];
-    const func = async() => {
-        list = await sentimentAnalysis(textAnalyticsClient, string);
-        console.log("List: " + list);
-        var norms = {};
-        fs.createReadStream('analyzed.csv').pipe(csv(['Song', 'Artist', 'Pos', 'Neg', 'Ntr'])).on('data', (row) => {
-            var song = row[0]; var ratings = [row[4], row[5], row[6]];
-            var songpos = row[4]; var songneg = row[5]; var songntr = row[6];
-            var listpos = list[0]; var listneg = list[1]; var listntr = list[2];
-            var dx = listpos - songpos; var dy = listneg - songneg; var dz = listntr - songntr;
-            var norm = Math.sqrt((dx * dx) + (dy * dy) + (dz * dz));
-            //console.log(norm);
-            //var norm = math.norm(ratings, list);
-            norms[song] = norm;
-            //console.log(norm);
-        }).on('end', () => {
-            var min = 100000;
-            var closest; var second; var third; var fourth; var fifth;
-            for (var key in norms){
-                //console.log(key);
-                if (norms[key] < min){
-                    min = norms[key];
-                    closest = key;
-                }
-            }
-            min = 100000;
-            for (var key in norms){
-                if (norms[key] < min && key!= closest){
-                    min = norms[key];
-                    second = key;
-                }
-            }
-            min = 100000;
-            for (var key in norms){
-                if (norms[key] < min && key!= closest && key != second){
-                    min = norms[key];
-                    third = key;
-                }
-            }
-            min = 100000;
-            for (var key in norms){
-                if (norms[key] < min && key!= closest && key != second && key != third){
-                    min = norms[key];
-                    fourth = key;
-                }
-            }
-            min = 100000;
-            for (var key in norms){
-                if (norms[key] < min && key!= closest && key != second && key != third && key != fourth){
-                    min = norms[key];
-                    fifth = key;
-                }
-            }
-            var topfive = [closest, second, fourth]; console.log(topfive);
+    if (category === "music"){
+        let boo = {"text": `Here is some music you should definitely watch to right now:`};
+        callSendAPI(sender_psid, boo);
+    } else if (category === "movie"){
+        let boo = {"text": `Here are some movies you should definitely watch to right now:`};
+        callSendAPI(sender_psid, boo);
+    }
+    if (category === "music"){
+        const func = async() => {
+            list = await sentimentAnalysis(textAnalyticsClient, string);
+            console.log("List: " + list);
+            var norms = {};
             fs.createReadStream('analyzed.csv').pipe(csv(['Song', 'Artist', 'Pos', 'Neg', 'Ntr'])).on('data', (row) => {
-                var outputs = [];
-                var names = [];
-                for (var item in topfive){
-                    if (row[0] === topfive[item] && !names.includes(row[0])){
-                        names.push(row[0]);
-                        spotify.search({type:'track', query:`${row[0]} ${row[1]}`, limit:1}, function(err, data){
-                            if (err){
-                                console.log("Error occured: "+err);
-                            }
-                            var href = data.tracks.items[0].external_urls.spotify;
-                            //console.log(href);
-                            if (!outputs.includes(href)){
-                                outputs.push(href);
-                                let songreply = {"text": `${row[0]} by ${row[1]}. Find it on Spotify at ${href}.`};
-                                callSendAPI(sender_psid, songreply);
-                            }
-                        })
+                var song = row[0]; var ratings = [row[4], row[5], row[6]];
+                var songpos = row[4]; var songneg = row[5]; var songntr = row[6];
+                var listpos = list[0]; var listneg = list[1]; var listntr = list[2];
+                var dx = listpos - songpos; var dy = listneg - songneg; var dz = listntr - songntr;
+                var norm = Math.sqrt((dx * dx) + (dy * dy) + (dz * dz));
+                //console.log(norm);
+                //var norm = math.norm(ratings, list);
+                norms[song] = norm;
+                //console.log(norm);
+            }).on('end', () => {
+                var min = 100000;
+                var closest; var second; var third; var fourth; var fifth;
+                for (var key in norms){
+                    //console.log(key);
+                    if (norms[key] < min){
+                        min = norms[key];
+                        closest = key;
                     }
                 }
-            })
-            });
-        };
-    func();
+                min = 100000;
+                for (var key in norms){
+                    if (norms[key] < min && key!= closest){
+                        min = norms[key];
+                        second = key;
+                    }
+                }
+                min = 100000;
+                for (var key in norms){
+                    if (norms[key] < min && key!= closest && key != second){
+                        min = norms[key];
+                        third = key;
+                    }
+                }
+                min = 100000;
+                for (var key in norms){
+                    if (norms[key] < min && key!= closest && key != second && key != third){
+                        min = norms[key];
+                        fourth = key;
+                    }
+                }
+                min = 100000;
+                for (var key in norms){
+                    if (norms[key] < min && key!= closest && key != second && key != third && key != fourth){
+                        min = norms[key];
+                        fifth = key;
+                    }
+                }
+                var topfive = [closest, second, fourth]; console.log(topfive);
+                fs.createReadStream('analyzed.csv').pipe(csv(['Song', 'Artist', 'Pos', 'Neg', 'Ntr'])).on('data', (row) => {
+                    var outputs = [];
+                    var names = [];
+                    for (var item in topfive){
+                        if (row[0] === topfive[item] && !names.includes(row[0])){
+                            names.push(row[0]);
+                            spotify.search({type:'track', query:`${row[0]} ${row[1]}`, limit:1}, function(err, data){
+                                if (err){
+                                    console.log("Error occured: "+err);
+                                }
+                                var href = data.tracks.items[0].external_urls.spotify;
+                                //console.log(href);
+                                if (!outputs.includes(href)){
+                                    outputs.push(href);
+                                    let songreply = {"text": `${row[0]} by ${row[1]}. Find it on Spotify at ${href}.`};
+                                    callSendAPI(sender_psid, songreply);
+                                }
+                            })
+                        }
+                    }
+                })
+                });
+            };
+        func();
+    } else if (category === "movie"){
+        const func = async() => {
+            list = await sentimentAnalysis(textAnalyticsClient, string);
+            console.log("List: " + list);
+            var norms = {};
+            fs.createReadStream('movieanalyzed.csv').pipe(csv(['Title', 'Overview', 'Pos', 'Neg', 'Ntr'])).on('data', (row) => {
+                var title = row[0]; var ratings = [row[3], row[4], row[5]]; var overview = row[1];
+                var songpos = row[3]; var songneg = row[4]; var songntr = row[5];
+                var listpos = list[0]; var listneg = list[1]; var listntr = list[2];
+                var dx = listpos - songpos; var dy = listneg - songneg; var dz = listntr - songntr;
+                var norm = Math.sqrt((dx * dx) + (dy * dy) + (dz * dz));
+                //console.log(norm);
+                //var norm = math.norm(ratings, list);
+                norms[title] = norm;
+                //console.log(norm);
+            }).on('end', () => {
+                var min = 100000;
+                var closest; var second; var third; var fourth; var fifth;
+                for (var key in norms){
+                    console.log(key);
+                    console.log(norms[key]);
+                    if (norms[key] < min){
+                        min = norms[key];
+                        closest = key;
+                    }
+                }
+                min = 100000;
+                for (var key in norms){
+                    if (norms[key] < min && key!= closest){
+                        min = norms[key];
+                        second = key;
+                    }
+                }
+                min = 100000;
+                for (var key in norms){
+                    if (norms[key] < min && key!= closest && key != second){
+                        min = norms[key];
+                        third = key;
+                    }
+                }
+                min = 100000;
+                for (var key in norms){
+                    if (norms[key] < min && key!= closest && key != second && key != third){
+                        min = norms[key];
+                        fourth = key;
+                    }
+                }
+                min = 100000;
+                for (var key in norms){
+                    if (norms[key] < min && key!= closest && key != second && key != third && key != fourth){
+                        min = norms[key];
+                        fifth = key;
+                    }
+                }
+                var topfive = [closest, second, fourth]; console.log(topfive);
+                fs.createReadStream('movieanalyzed.csv').pipe(csv(['Title', 'Overview', 'Pos', 'Neg', 'Ntr'])).on('data', (row) => {
+                    var outputs = [];
+                    var names = [];
+                    for (var item in topfive){
+                        if (row[0] === topfive[item] && !names.includes(row[0])){
+                            names.push(row[0]);
+                            let songreply = {"text": `${row[0]}.
+Here is a quick overview of the movie:
+
+${row[1]}`}
+                            callSendAPI(sender_psid, songreply);
+                        }
+                    }
+                })
+                });
+            };
+        func();
+    } else {
+        response = chooseMedia(sender_psid);
+    }
   } else {
-    response = setPreferences(sender_psid);
+    response = chooseMedia(sender_psid);
   }
   // Send the response message
   callSendAPI(sender_psid, response);
@@ -217,7 +305,7 @@ function handlePostback(sender_psid, received_postback) {
   console.log(payload);
   // Set the response based on the postback payload
   if (payload === "<postback_payload>"){
-    response = setPreferences(sender_psid);
+    response = chooseMedia(sender_psid);
   }
   // Send the message to acknowledge the postback
   callSendAPI(sender_psid, response);
@@ -296,29 +384,77 @@ function sendImages(mood){
     return response;
 }
 
-// Sends first question of preferences to check user's mood
-function setPreferences(sender_psid){
+// Sends first question of preferences to check if user wants to find movies or songs
+function chooseMedia(sender_psid){
     let response = {
-        "text": "Hi! Let's find some songs to fit your current mood. How are you feeling today?",
+        "text": "Hi! What would you like to do today?",
         "quick_replies":[
-                {
-                    "content_type":"text",
-                    "title":"Great",
-                    "payload":"great",
-                    "image_url":"https://cdn.shopify.com/s/files/1/1061/1924/products/Smiling_Face_Emoji_grande.png?v=1571606036"
-                },{
-                    "content_type":"text",
-                    "title":"Ok",
-                    "payload":"ok",
-                    "image_url":"https://hotemoji.com/images/dl/r/straight-face-emoji-by-twitter.png"
-                },{
-                    "content_type":"text",
-                    "title":"Sad",
-                    "payload":"sad",
-                    "image_url":"https://i.pinimg.com/originals/3e/90/e8/3e90e8bfe2328d42174d3c3743977cdf.png"
-                }
+            {
+                "content_type":"text",
+                "title":"Watch a movie",
+                "payload":"movie",
+                "image_url":"https://lh3.googleusercontent.com/proxy/dtHuwJtaXiuF7GYbyeDmSa_ApZKH0MpZp6mg7ghG8js49slWQBXjT_QYxsQEYWWxnnApiwx7HjtA5OXTlqt0Z-y-gj925yyjJIps_O34Pn0bDYdUY1znz3_7IlJXk4DnuHRKUK8"
+            },
+            {
+                "content_type":"text",
+                "title":"Listen to music",
+                "payload":"music",
+                "image_url":"https://www.wyzowl.com/wp-content/uploads/2018/08/The-20-Best-Royalty-Free-Music-Sites-in-2018.png"
+            }
         ]
     };
+    return response;
+}
+
+// Sends first question of preferences to check user's mood
+function setPreferences(sender_psid){
+    var response;
+    if (category === "music"){
+        response = {
+            "text": "Great! Let's find some songs to fit your current mood. How are you feeling today?",
+            "quick_replies":[
+                    {
+                        "content_type":"text",
+                        "title":"Great",
+                        "payload":"great",
+                        "image_url":"https://cdn.shopify.com/s/files/1/1061/1924/products/Smiling_Face_Emoji_grande.png?v=1571606036"
+                    },{
+                        "content_type":"text",
+                        "title":"Ok",
+                        "payload":"ok",
+                        "image_url":"https://hotemoji.com/images/dl/r/straight-face-emoji-by-twitter.png"
+                    },{
+                        "content_type":"text",
+                        "title":"Sad",
+                        "payload":"sad",
+                        "image_url":"https://i.pinimg.com/originals/3e/90/e8/3e90e8bfe2328d42174d3c3743977cdf.png"
+                    }
+            ]
+        };
+    } else if (category === "movie"){
+        response = {
+            "text": "Great! Let's find some movies to fit your current mood. How are you feeling today?",
+            "quick_replies":[
+                    {
+                        "content_type":"text",
+                        "title":"Great",
+                        "payload":"great",
+                        "image_url":"https://cdn.shopify.com/s/files/1/1061/1924/products/Smiling_Face_Emoji_grande.png?v=1571606036"
+                    },{
+                        "content_type":"text",
+                        "title":"Ok",
+                        "payload":"ok",
+                        "image_url":"https://hotemoji.com/images/dl/r/straight-face-emoji-by-twitter.png"
+                    },{
+                        "content_type":"text",
+                        "title":"Sad",
+                        "payload":"sad",
+                        "image_url":"https://i.pinimg.com/originals/3e/90/e8/3e90e8bfe2328d42174d3c3743977cdf.png"
+                    }
+            ]
+        };
+    }
+
     return response;
 }
 
@@ -348,8 +484,8 @@ function callSendAPI(sender_psid, response) {
 }
 
 const { TextAnalyticsClient, AzureKeyCredential } = require("@azure/ai-text-analytics");
-const key = 'eefd7a51fe184ef382bc1db79d003b69';
-const endpoint = 'https://songsentimentanalyzer.cognitiveservices.azure.com/';
+const key = 'e2bb4d8d17a54c0599bedf0a85b8eb75';
+const endpoint = 'https://moodmatch.cognitiveservices.azure.com/';
 const textAnalyticsClient = new TextAnalyticsClient(endpoint,  new AzureKeyCredential(key));
 
 // Performs all sentimental analysis on user's inputs
