@@ -16,6 +16,7 @@
     "express": "^4.17.1",
     "jquery": "^3.5.1",
     "mathjs": "^7.0.1",
+    "movie-trailer": "^2.0.6",
     "node-spotify-api": "^1.1.1",
     "request": "^2.72.0"
   }

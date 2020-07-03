@@ -11,6 +11,7 @@ const
   fs = require('fs'),
   math = require('mathjs'),
   readline = require('readline'),
+  movieTrailer = require( 'movie-trailer' ),
   app = express().use(body_parser.json()); // creates express http server
 
 var Spotify = require('node-spotify-api');
@@ -276,11 +277,17 @@ function handleMessage(sender_psid, received_message) {
                     for (var item in topfive){
                         if (row[0] === topfive[item] && !names.includes(row[0])){
                             names.push(row[0]);
-                            let songreply = {"text": `${row[0]}.
-Here is a quick overview of the movie:
+                            var link;
+                            const func2 = async() => {
+                                link = await movieTrailer(row[0]);
+                                console.log(link);
+                                let songreply = {"text": `${row[0]}.
+Here is the trailer for the movie:
 
-${row[1]}`}
-                            callSendAPI(sender_psid, songreply);
+${link}`};
+callSendAPI(sender_psid, songreply);
+                            }
+                            func2();
                         }
                     }
                 })
