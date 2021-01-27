@@ -491,8 +491,8 @@ function callSendAPI(sender_psid, response) {
 }
 
 const { TextAnalyticsClient, AzureKeyCredential } = require("@azure/ai-text-analytics");
-const key = 'e2bb4d8d17a54c0599bedf0a85b8eb75';
-const endpoint = 'https://moodmatch.cognitiveservices.azure.com/';
+const key = 'f8ba2609a8774615b1b96b182bf923e2';
+const endpoint = 'https://westcentralus.api.cognitive.microsoft.com/text/analytics';
 const textAnalyticsClient = new TextAnalyticsClient(endpoint,  new AzureKeyCredential(key));
 
 // Performs all sentimental analysis on user's inputs
