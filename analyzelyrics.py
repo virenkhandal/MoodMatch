@@ -2,8 +2,8 @@ from azure.ai.textanalytics import TextAnalyticsClient
 from azure.core.credentials import AzureKeyCredential
 import csv
 
-key = "eefd7a51fe184ef382bc1db79d003b69"
-endpoint = "https://songsentimentanalyzer.cognitiveservices.azure.com/"
+key = "f8ba2609a8774615b1b96b182bf923e2"
+endpoint = "https://westcentralus.api.cognitive.microsoft.com/text/analytics"
 
 
 def authenticate_client():
