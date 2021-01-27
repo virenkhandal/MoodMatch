@@ -132,7 +132,7 @@ function handleMessage(sender_psid, received_message) {
     string = string + " " + received_message.text;
     let list = [];
     if (category === "music"){
-        let boo = {"text": `Here is some music you should definitely watch to right now:`};
+        let boo = {"text": `Here is some music you should definitely listen to right now:`};
         callSendAPI(sender_psid, boo);
     } else if (category === "movie"){
         let boo = {"text": `Here are some movies you should definitely watch to right now:`};
@@ -491,8 +491,8 @@ function callSendAPI(sender_psid, response) {
 }
 
 const { TextAnalyticsClient, AzureKeyCredential } = require("@azure/ai-text-analytics");
-const key = 'f8ba2609a8774615b1b96b182bf923e2';
-const endpoint = 'https://westcentralus.api.cognitive.microsoft.com/text/analytics';
+const key = '813d6fc3b6d840599f4391fa3d25e30e';
+const endpoint = 'https://moodmatch.cognitiveservices.azure.com/';
 const textAnalyticsClient = new TextAnalyticsClient(endpoint,  new AzureKeyCredential(key));
 
 // Performs all sentimental analysis on user's inputs
