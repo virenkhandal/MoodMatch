@@ -400,7 +400,7 @@ function chooseMedia(sender_psid){
                 "content_type":"text",
                 "title":"Watch a movie",
                 "payload":"movie",
-                "image_url":"https://lh3.googleusercontent.com/proxy/dtHuwJtaXiuF7GYbyeDmSa_ApZKH0MpZp6mg7ghG8js49slWQBXjT_QYxsQEYWWxnnApiwx7HjtA5OXTlqt0Z-y-gj925yyjJIps_O34Pn0bDYdUY1znz3_7IlJXk4DnuHRKUK8"
+                "image_url":"https://i.pinimg.com/originals/0b/44/ff/0b44ff30dbe13528285e97eb23b3e185.png"
             },
             {
                 "content_type":"text",
