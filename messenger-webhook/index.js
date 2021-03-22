@@ -8,6 +8,7 @@ const
   path = require('path'),
   d3 = require('d3-fetch'),
   csv = require('csv-parser'),
+  cosine = require('compute-cosine-similarity'),
   fs = require('fs'),
   math = require('mathjs'),
   readline = require('readline'),
@@ -145,10 +146,15 @@ function handleMessage(sender_psid, received_message) {
             var norms = {};
             fs.createReadStream('analyzed.csv').pipe(csv(['Song', 'Artist', 'Pos', 'Neg', 'Ntr'])).on('data', (row) => {
                 var song = row[0]; var ratings = [row[4], row[5], row[6]];
+                
                 var songpos = row[4]; var songneg = row[5]; var songntr = row[6];
                 var listpos = list[0]; var listneg = list[1]; var listntr = list[2];
-                var dx = listpos - songpos; var dy = listneg - songneg; var dz = listntr - songntr;
-                var norm = Math.sqrt((dx * dx) + (dy * dy) + (dz * dz));
+                
+                var moodlist = [listpos, listneg, listntr]
+                var songlist = [songpos, songneg, songntr]
+                var norm = cosine(moodlist, songlist)
+                // var dx = listpos - songpos; var dy = listneg - songneg; var dz = listntr - songntr;
+                // var norm = Math.sqrt((dx * dx) + (dy * dy) + (dz * dz));
                 //console.log(norm);
                 //var norm = math.norm(ratings, list);
                 norms[song] = norm;
