@@ -14,7 +14,7 @@
     "compute-cosine-similarity": "^1.0.0",
     "csv-parser": "^2.3.3",
     "d3-fetch": "^1.2.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "jquery": "^3.5.1",
     "mathjs": "^7.0.1",
     "movie-trailer": "^2.0.6",
